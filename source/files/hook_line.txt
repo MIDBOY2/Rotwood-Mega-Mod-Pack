@@ -1,0 +1,1 @@
+do local nl = kleiloadlua("MODS:nativeloader.lua") if type(nl) == "function" then local ok, err = pcall(nl, "early") if not ok then print("[Native Loader] could not start: " .. tostring(err)) end elseif nl ~= nil then print("[Native Loader] " .. tostring(nl)) end end -- Native Loader hook (own mod loader; delete this line to switch it off)

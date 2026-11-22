@@ -1,0 +1,5 @@
+pack=Rotwood Mega Mod Pack
+version=0.1.0-draft6
+game_build=763742
+loader=0.1.0
+mods=24
