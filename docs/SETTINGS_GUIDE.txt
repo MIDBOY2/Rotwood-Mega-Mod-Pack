@@ -1,0 +1,2499 @@
+Rotwood Mega Mod Pack 0.1.0-draft6 - SETTINGS GUIDE
+
+Every setting of the loader and of each mod: what it does, its value as shipped, and the file it is in.
+Built from the settings files themselves, so it matches this version of the pack.
+
+WHERE THE FILES ARE
+Everything is under your Rotwood mods folder:
+    %APPDATA%\Klei\Rotwood\steam-<your id>\mods\
+Paste %APPDATA%\Klei\Rotwood into the address bar of a File Explorer window to get there.
+The paths below start from that mods folder.
+
+HOW TO CHANGE A SETTING
+1. Close Rotwood.
+2. Open the file in Notepad (right-click, Open with, Notepad).
+3. Find the line with the setting name and change what comes after the = sign.
+      on / off      true or false
+      numbers       0.35, 5, 100 (a dot for decimals, no quotes)
+      text          "aim" (keep the quotes)
+      lists         { "a", "b" } (keep the braces and commas)
+4. Keep the comma at the end of the line. Lines starting with -- are notes and do nothing.
+5. Save, then start Rotwood. Settings are read when the game starts.
+
+If the game shows a message about a mod at the main menu after an edit, a comma, quote or brace
+went missing in that file. Undo the edit, or copy the original file back from the download
+(files\mods\<mod>\scripts\).
+
+YOUR CHANGES AND UPDATES
+Running Install again with the same pack version (for example after a game update) leaves your
+settings alone. Installing a newer pack version moves the old mod folders, with your settings,
+to %APPDATA%\Klei\Rotwood\steam-<your id>\modpack_backup\ and puts fresh ones in: copy your
+values over by hand.
+
+SWITCHING A WHOLE MOD OFF
+Either put its folder name in disabled_mods in nativeloader_settings.lua (below), or set
+"enabled = false" in the mod's own settings file where it has one.
+
+================================================================================================
+THE LOADER (Native Loader)
+File: nativeloader_settings.lua
+Native Loader settings (optional file: without it these defaults apply). Data only: no code
+runs from here. Lives next to nativeloader.lua in the mods folder.
+================================================================================================
+
+enabled = true
+    false: load no mods at all (the game runs unmodified)
+
+disabled_mods = {}
+    mod folders to leave out, e.g. { "rotwood-stick-aim", "rotwood-perf-probe" }
+
+fast_require = false
+    experimental: game scripts are found without first looking in every mod folder
+
+notices = true
+    (a mod can then no longer replace a game script by having a file with the same path)
+    the message at the main menu when a mod failed to load / the mods are off
+
+verbose = false
+    more lines in client_log.txt (every folder looked at, modimport, post-init counts)
+
+================================================================================================
+Armor Dyes 0.6.0
+File: rotwood-armor-dyes\scripts\armordyes_settings.lua
+Armor Dyes settings. Restart the game after changing this file.
+================================================================================================
+
+enabled = true
+    false = the whole mod is off (dyes you picked stay in the save and come back when it's
+    on again)
+
+dye_tab = true
+    the ARMOUR DYE tab in the character screen (the mirror in town)
+
+weapon_dyes = true
+    a WEAPON sub-tab in ARMOUR DYE: dye the weapon you're carrying. (0.5.6) Every dye is
+    worked out from that weapon's own colours like armour's (its colours turned, not
+    painted over): the colour families, the neutrals, the 21 colour dyes, the 4 soft
+    player colours and your own dyes. Every weapon keeps its own dye. false = no weapon
+    tab, weapons in their normal colours.
+
+dye_weapon_trails = true
+    (0.5.9) The spear's twirl trail (drawn in the spear's own colours) takes the spear's
+    dye too. false = the trail in its normal colours (0.5.8 and before).
+
+palettes = true
+    (0.5.6) Tint palettes: a whole colour scheme per piece instead of one colour (each
+    material its own palette colour: main, second, accent, metal...), the boss looks'
+    palettes and colour palettes. Live colour shifts, no extra art.
+
+palette_tab = true
+    a PALETTES sub-tab in ARMOUR DYE: one click puts a palette on the helmet, body, legs
+    and weapon together
+
+palettes_in_lists = false
+    the palettes in each piece's own list too (HELMET / BODY / LEGS / WEAPON), to mix
+    palettes per piece. Longer lists. false = PALETTES tab only.
+
+custom_dyes = { ... }
+    Dyes of your own, added after the built-in ones. These are a plain colour shift, the
+    same on every armour set (not colour-matched): hue        = degrees to turn the
+    colours (0-360) saturation = colour strength x (1 = unchanged, 0 = grey) brightness =
+    x (1 = unchanged, 0.6 = darker, 1.2 = lighter)
+
+new_character_colour = true
+    A brand-new character (made on the new-character screen) starts with its basic armour
+    in its player's soft colour: player 1 Soft Blue, player 2 Soft Yellow, player 3 Soft
+    Teal, player 4 Soft Purple. Only once, only basic armour it hasn't dyed; change it at
+    the mirror any time. false = new characters start in the original colours.
+
+loadout_dyes = "auto"
+    Loadouts remember the dye on each piece they wear (a Morphic piece: the dye on the
+    boss look it shows), and equipping a loadout puts them back. "auto" = a dye you pick
+    while wearing a loadout goes into it straight away (and its loadout statue changes
+    with it) "save" = like gems: a changed dye marks the loadout as changed; save the
+    loadout to keep it, switching loadouts puts its own dyes back false  = dyes aren't
+    part of loadouts (as before) Loadouts saved before this don't change your dyes until
+    they have some.
+
+statue_look = true
+    The loadout statue in town shows the loadout as you'd wear it: the boss look of
+    Morphic armour (its gem), mirage looks, and the dyes. false = the game's statue (plain
+    pieces, no dyes).
+
+imbued = true
+    (0.5.0) The imbued boss looks: the seven bosses' armour and weapons in their imbued
+    (elite) colours. Each boss look gets "Imbued" first in its ARMOUR DYE list (helmet,
+    body, legs, and its weapons in WEAPON), and the mirage station gets imbued patterns.
+    The art loads in town (for the previews) and in a hunt only for the imbued pieces your
+    hunters wear. false = none of it.
+
+imbued_alt_looks = true
+    The extra imbued looks after "Imbued": Treek Plum, Eggzy First and Salmon, Grimhollow
+    Lava and Lava with the magenta glow. false = only "Imbued" (less art loaded in town).
+
+imbued_reference_looks = false
+    (0.5.9) Reference looks: older versions kept to compare with. Right now Grimhollow's
+    lava bow with its first, red / pink string ("Imbued: Lava, red bow string" and
+    "Imbued: Lava, magenta glow, red bow string"; the lava bow's string is now orange).
+    false = left out (no art loaded for them).
+
+imbued_mirage = true
+    Imbued patterns at the mirage station (for any item of that slot; weapons of that
+    weapon type), at the usual price. false = the dyes only.
+
+imbued_icons = true
+    A piece in an imbued look shows the imbued icon (inventory, mirage station, loadouts).
+    false = the normal icons.
+
+imbued_needs_boss_piece = true
+    The imbued patterns of a boss piece come with owning it (its weapon, its armour look,
+    or a Morphic piece showing it). false = all imbued patterns from the start.
+
+debug = false
+    extra lines in client_log.txt
+
+================================================================================================
+Blight Fix 0.2.1
+File: rotwood-blight-fix\scripts\blightfix_settings.lua
+Blight Fix settings
+================================================================================================
+
+enabled = true
+    true: keep the Blight Incursion stage valid between legs (the fix). false: the whole
+    mod off, the game's own way (to compare: the log then shows "Selecting leg 4-2 (Rest
+    Room)" after taking the second portal; the overlay is the game's too).
+
+overlay = "faded"
+    The Blight's purple screen overlay (the game's own, on the whole Blight outside the
+    Rest Rooms): "faded"    the game's overlay at overlay_faded of its strength "vanilla"
+    the game's own "none"     off false      this part off (the game's own, no key)
+
+overlay_faded = 0.10
+    how strong "faded" is: 0.10 = 10% of the game's (0 .. 1)
+
+overlay_key = "Ctrl+B"
+    the key that cycles faded -> vanilla -> none (false: no key). Exact modifiers:
+    "Ctrl+B" isn't "Ctrl+Shift+B". Not while the console is open. The choice is kept for
+    the next rooms and the next game start; changing overlay above starts over from the
+    new value.
+
+overlay_note = true
+    a short note on screen when the key changes it
+
+================================================================================================
+Boss Weapon Passives 0.2.9
+File: rotwood-boss-passives\scripts\bosspassives_settings.lua
+Boss Weapon Passives settings. Edit, save, restart the game. One passive per boss, on all six
+of its weapons (Hammer, Spear, Greatsword, Bow, Cannon, Striker). on = false: that boss's
+weapons keep the game's placeholder (no passive).
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+guard = true
+    Bulletproofing: an error inside a passive is logged ("[Boss Passives] error in ...")
+    and skipped, instead of the game's error screen ending the run. false: errors go to
+    the game as before.
+
+megatreemon = { on = true, heal_per_hit = 5, max_per_room = 50 }
+    Mother Treek: hitting a knocked-down enemy heals you, up to a cap a room. (Your heal
+    powers' bonuses don't add to it: it heals heal_per_hit.)
+
+owlitzer = { ... }
+    Owlitzer: a perfect dodge (an attack passes through you while you dodge) lets loose a
+    gust of wind on both sides of you, and your next attack within crit_seconds is a
+    critical hit. The gust hits every enemy within gust_radius for gust_damage times your
+    weapon's damage (1.0 = the same; 0 = no damage) and pushes them away (gust: "weak",
+    "medium", "strong" or "" for no push). gust_look = "whirlwind" adds the Windmon's wind
+    spin round you on top of the gust (whirlwind_scale = its size; "" = the gust's puffs
+    only).
+      - gust_look = "whirlwind", whirlwind_scale = 1.5 }
+
+bandicoot = { on = true, seconds = 3, damage = 1.0 }
+    Bandicoot: a successful Parry or a perfect dodge: for seconds, every hit you land
+    strikes again (damage = that much of the hit).
+
+thatcher = { on = true, every_hits = 25, radius = 6 }
+    Thatcher: every every_hits hits in a hit streak, a swarm bursts out of you and coats
+    enemies within radius in Acid.
+
+sedament = { on = true, damage_per_kill = 0.05, max_stacks = 5 }
+    Sedament: each kill adds damage for the rest of the room, up to max_stacks.
+
+eggzy = { on = true, cooldown = 3 }
+    Eggzy: a critical hit that kills makes the enemy explode, at most once every cooldown
+    seconds.
+
+grimhollow = { on = true, front_reduction = 0.4, after_heavy_reduction = 0.25, after_heavy_seconds = 3 }
+    Grimhollow (Bastion Bark): during your heavy attacks you take front_reduction less
+    damage from the front (0.4 = 40% less); a heavy attack that lands:
+    after_heavy_reduction less damage from every side for after_heavy_seconds. Both at
+    once multiply (40% and 25% = 55% less).
+
+================================================================================================
+Camp Brother (experiment) 0.3.1
+File: rotwood-camp-brother\scripts\campbrother_settings.lua
+Camp Brother settings (an experiment). World units: x grows east (right), z grows north (up
+the screen); a map tile is 4 x 4. Edit, save, restart the game.
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+look = "layout2"
+    His station: between Lottie (the refinery) and Toot (the dojo), at the crossroads.
+    Which setup (change this one word to compare them): "wagon_table" = Doc's big potion
+    wagon (drawn at 0.75) on the stone, him on the road in front of it, his red table on
+    the road to his right (like Hamish's forge and gem table, mirrored) "table"       =
+    only his red table (drawn at 1.3) on the stone, him on the road beside it
+    "wagon_front" = the big wagon (0.75) with his table right in front of it, both on the
+    stone, him on the road "layout2"     = "wagon_front" with the potion table up by the
+    refinery road (your screenshot's arrangement) "layout3"     = Hamish's station,
+    mirrored: the wagon where his forge is (on a 3 x 2 stone floor like the forge's), the
+    red table where the forge's tool table is, him where Hamish stands, the potion table
+    where the gem table is, and the road between them, all from the game's own numbers,
+    left and right swapped "table", "wagon_front" and "layout2" also have a potion table
+
+looks = { ... }
+    where everything stands in each setup (scale = how big it's drawn; face = "right" or
+    "left")
+      - wagon_table = { ... }
+      - table = { ... }
+      - wagon_front = { ... }
+      - layout2 = { ... }
+      - layout3 = { ... }
+          (its own floor and road tiles: these replace stone_floor's floor and
+          road_tiles below while it's the setup)
+
+talk = true
+    Gishins talks: Chit Chat (RB) with his lines (scripts/campbrother_strings.lua). false
+    = he only stands there (the game gives him its "Have a good day!")
+
+road_potion_table = true
+    the potion table: true = on, false = off
+
+working_potion_table = true
+    which one: Tonic Swap's working Potion Table when that mod is on (swap tonics there);
+    false = Doc's little potion table, decoration only
+
+stone_floor = true
+    the stone floor: the camp's cobblestone, 8 x 8 (2 x 2 map tiles), like the floor under
+    every NPC home. Its middle (snaps to the map's tile corners, so it moves 4 at a time):
+    x -54..-46, z -22..-14
+
+floor = { x = -50, z = -18 }
+    (goes with the setting above)
+
+road = true
+    the road: the camp's dirt road on these map tiles (any point inside one): the line
+    along the floor's front joining the road down to Toot, the road down past the refinery
+    two tiles wide, and the grass between the station and the refinery road. Only grass
+    becomes road.
+
+road_tiles = { ... }
+    (a group of settings: its entries follow)
+
+move_chest = true
+    the chest and the starting camp (bedroll), down in the bottom-left corner (the little
+    rubble pile there moves aside for the camp)
+
+chest = { x = -56, z = -28 }
+    (goes with the setting above)
+
+move_camp = true
+    (goes with the setting above)
+
+camp = { x = -59, z = -26.5 }
+    (goes with the setting above)
+
+move_rubble = true
+    (goes with the setting above)
+
+================================================================================================
+Camp Saves 0.1.1
+File: rotwood-camp-saves\scripts\campsaves_settings.lua
+Camp Saves settings. Save the file and restart the game. A bad value falls back to its default
+(the log says which).
+================================================================================================
+
+enabled = true
+    false: the game's way (a full save 10 s after every decoration change)
+
+wait_after_build_mode = 2
+    seconds after you leave build mode before the save (a quick re-entry, such as picking
+    the next decoration, doesn't save in between)
+
+max_wait = 180
+    seconds at most a change waits while you stay in build mode; then it saves anyway (the
+    game itself waits 3 minutes on Switch, for the same hitch)
+
+save_on_pause = true
+    the pause menu opening saves waiting changes (quitting to the main menu from there
+    doesn't save in the game)
+
+debug = false
+    true: log every change held and every save
+
+================================================================================================
+Cannon Tweaks 0.1.0
+File: rotwood-cannon-tweaks\scripts\cannontweaks_settings.lua
+Cannon Tweaks settings. Restart the game after changing this file (or try a number for one
+session in the console: c_cannon("single_shot.rounds", 4)). Each power: enabled = false puts
+it back as the game has it. "game:" is the game's own number.
+================================================================================================
+
+enabled = true
+    false = the mod is off (every cannon power as the game has it)
+
+single_shot = { ... }
+    Single Shot: shots fly faster, travel farther and hit harder, but the cannon holds
+    only a few
+      - enabled = true
+      - rounds = 3
+          game: 1. Rounds in the cannon (1 to 30)
+      - damage_mult = 3
+          game: 3. Weapon damage x3
+      - light_speed_mult = 3
+          game: 3. Light shots fly 3x as fast
+      - heavy_speed_mult = 1.5
+          game: 1.5. Heavy shots (blasts) 1.5x as fast
+      - range_mult = 2
+          game: 2. Shots travel 2x as far
+      - blast_angle_mult = 0.5
+          game: 0.5. The blast's spread (0.5 = half as wide)
+
+return_to_sender = { ... }
+    Return to Sender: shots bounce back and can be caught to reload
+      - enabled = true
+      - range_penalty = 20
+          game: 60. -20% attack range (0 to 95; 0 = no penalty)
+      - reload_on_catch = 2
+          game: 1. Rounds one catch reloads (1 to 30)
+
+bottomless_clip = { ... }
+    Bottomless Clip: rounds come back by themselves, but emptying the cannon overheats it
+      - enabled = true
+      - regen_per_sec = 3
+          game: 1.66. Rounds back per second
+      - overheat_sec = 2.75
+          game: 5. Seconds an overheat lasts (then the whole clip is back)
+      - overheat_sound_sec = 1
+          game: 1. Seconds the overheat sound keeps going after the last shot
+
+spray_n_pray = { ... }
+    Spray 'n' Pray: more rounds, and holding light attack keeps firing
+      - enabled = true
+      - extra_rounds = 6
+          game: 6. Extra rounds in the cannon
+
+fix_texts = true
+    correct the power texts to the numbers ("2 Cannonballs", no "-0% Attack Range")
+
+console_command = true
+    the console command: c_cannon() every number now,
+    c_cannon("bottomless_clip.regen_per_sec", 4) one number for this session,
+    c_cannon("single_shot.rounds", "game") the game's number
+
+================================================================================================
+Character Builds 0.2.0
+File: rotwood-character-builds\scripts\characterbuilds_settings.lua
+Character Builds settings. Restart the game after changing this file.
+================================================================================================
+
+enabled = true
+    false = the mod is off (your builds file stays where it is)
+
+builds_file = ""
+    The builds file: one file for every save, Steam account and character. "" = the
+    default: C:\Users\<you>\AppData\Roaming\Klei\Rotwood\character_builds.lua (next to the
+    steam-... folders; if the game won't keep it there, your save folder is used and the
+    log says so) Any full path works, for example a folder your PCs share, so a build
+    saved on one PC shows up on the other (write \\ or / between folders; the folder has
+    to exist): builds_file = "C:/Users/<you>/OneDrive/Rotwood/character_builds.lua",
+
+slots = 12
+    build slots in the BUILDS tab (at least this many; 4 more appear after your last
+    build)
+
+auto_backups = 8
+    automatic backups kept: your character as it was, saved before every load (1 to 50)
+
+mirror_tab = true
+    the BUILDS tab at the mirror in town
+
+show_gear = true
+    the build tiles show the gear and weapon the build was wearing (with their dyes)
+
+loadout_card = true
+    a card on the right of the slots with the focused build's loadout: weapon, gems,
+    armour, potion, tonic, gear level, damage and armour (the slots go 2 to a row). false
+    = 4 to a row, no card.
+
+key_open = "Ctrl+B"
+    a key that opens the BUILDS tab anywhere in town (press it again to close). "" = no
+    key.
+
+console_commands = true
+    console commands: cb_list(), cb_save(n), cb_load(n, p, what), cb_undo(), cb_delete(n)
+    (what: "all", "look", "face", "colours", "gear")
+
+================================================================================================
+Controller Layout 0.1.9
+File: rotwood-controller-layout\scripts\controllerlayout_settings.lua
+Controller Layout settings. Edit, save, restart the game. Right stick = emote ring: push the
+stick to open it, move it onto an emote, let go to play that emote. Letting go with nothing
+picked just closes it. (The face-button shortcuts still work while it's open.) Keyboard E is
+unchanged. The game's build button moves to the D-pad, which frees RS-click for Skill Slots.
+Customize town stays wherever the game's options put it (you have it on D-pad up). Applies to
+every controller (the game has one button layout for all pads). For a button set here, the
+game's options menu keeps showing the old one; the button here is the one that works. Gamepad
+button names: "DPAD_UP", "DPAD_DOWN", "DPAD_LEFT", "DPAD_RIGHT", "LT", "RT", "LB", "RB", "LS",
+"RS", "BACK", ... "" = no controller button. "game" = leave it where the game's options put
+it.
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+right_stick_emotes = true
+    emote ring on the right stick (push, move to pick, let go to play)
+
+open_at = 0.5
+    how far the stick has to be pushed to open the ring (0 to 1)
+
+pick_at = 0.6
+    how far it has to be pushed to pick an emote
+
+release_at = 0.5
+    The pick follows the stick every frame (spinning around is instant). Letting go, made
+    forgiving (the stick springs back through other angles and the thumb often slides as
+    it lets go): let go counts once the stick is back under this (0.5 = halfway; the
+    game's middle is ~0.3)
+
+settle_time = 0.07
+    moving around the ring is instant, but when you let go, an emote the stick only
+    touched for less than this many seconds doesn't count: you get the one you rested on
+    before it
+
+face_buttons_pick = false
+    false: with the ring opened by the stick, a face button closes it and does its usual
+    move (same thumb as the stick). true: face buttons pick emotes like the game's ring (Y
+    = top, B = right, A = bottom, X = left)
+
+emote_button = ""
+    the game's emote button (LT): "" = gone, emotes are on the right stick only
+
+build_button = "DPAD_DOWN"
+    build: open the decoration menu (the game has it on RS-click)
+
+customize_button = "game"
+    customize town: pick up / move decorations (the game has it on RT). "game" = the
+    game's options decide (you set D-pad up there)
+
+free_dpad = true
+    D-pad buttons that emote / build / customize town sit on (set here or in the game's
+    options) stop walking; the stick still walks
+
+debug_button = "hidden"
+    the game's "[Debug Menu]" button at the top of the screen in camp (the chest icon
+    under the build number; the game has no key for it): "hidden" = starts hidden, "shown"
+    = starts shown, "game" = left alone
+
+debug_button_key = "F9"
+    the key that shows / hides it in camp ("" = none; not F8: the game's feedback key)
+
+rev_number = "hidden"
+    the build number at the top ("REV. 760548", in camp and in runs): "hidden" = starts
+    hidden, "shown" = starts shown, "game" = left alone
+
+rev_number_key = "F10"
+    the key that shows / hides it ("" = none)
+
+overhead = "game"
+    What shows over the players' heads (all players): "game"       the game's: the health
+    bar with the name, the potion, the name when you're behind something "hp_potion"  the
+    health bar and the potion, no names "potion"     only the potion, and only when you
+    press potion with none left The key cycles them (a note at the side says which); the
+    choice is kept for the next rooms and game starts. Changing overhead here starts over.
+
+overhead_key = "Ctrl+H"
+    ("" = no key)
+
+overhead_note = true
+    (goes with the setting above)
+
+================================================================================================
+Fast Load 0.2.1
+File: rotwood-fast-load\scripts\fastload_settings.lua
+Fast Load settings. Edit, save, restart the game.
+================================================================================================
+
+enabled = true
+    false = the game's own file search (every mod folder checked on disk)
+
+log = true
+    a line in client_log.txt each load: how many disk checks were skipped
+
+quiet_looks = true
+    Quiet looks: whenever a character's look is touched (equipping anything, the dodge
+    afterimages, the HUD portrait, menu puppets...) the game puts every armour piece and
+    body part back on, one engine call per symbol, and some armour art writes "Could not
+    find anim build FROMNUM" to the log on each call. This skips the calls that would put
+    back exactly what's already there (same look, far fewer calls and log lines). false =
+    the game's own calls
+
+quiet_looks_report = true
+    quiet looks: a line a minute in client_log.txt with how many calls were skipped, and
+    the first few art calls of each load named
+
+hidden_hud_fix = true
+    Hidden-HUD fix (a game bug): with the Extra Lives talent, the lives counter laid out
+    the whole player HUD again every frame while a menu hides the HUD (the skill menu, the
+    forge, the pause screen...): about 4 MB of garbage and a fifth of every second, so the
+    frame rate jumps and the game stutters in menus. On: it rests while it can't be seen.
+    false = the game's
+
+================================================================================================
+Frenzy Levels 0.11.3
+File: rotwood-frenzy-levels\scripts\frenzylevels_settings.lua
+Frenzy Levels settings. Restart the game after changing.
+================================================================================================
+
+enabled = true
+    false = the game's way (frenzied main hunts are always Frenzy 5)
+
+min_level = 1
+    The lowest level LB / Q goes to: 1 = Frenzy 1. 0 = also "Standard" (the hunt with no
+    frenzy, like before you cleared the zone).
+
+default_level = 5
+    A hunt you haven't picked a level for yet starts at this level (5 = the game's
+    Frenzy).
+
+show_in_title = true
+    The level under the hunt's name in the map's side panel, with the LB / RB (Q / E)
+    buttons. false = no text (the dungeon tier badge still changes).
+
+side_hunts = true
+    Side hunts (the smaller hunts around each main one, like Acrid Glade next to Nocturne
+    Grove): LB / RB pick No frenzy or Frenzy 1 to 5 there too. The game frenzies them only
+    while they have weather, at a level it picks (1-4); a side hunt you never changed
+    keeps the game's level. The game's anomalies (side hunts it frenzies with weather)
+    never go to Standard and keep the game's Frenzy look. A side hunt you frenzy yourself:
+    X (keyboard Shift) on the map switches its look between the game's Frenzy colours and
+    the hunt's normal ones (saved per hunt). false = the game's way.
+
+frenzy_look = true
+    The game colours every frenzied hunt with a dark purple dusk (its Frenzy lighting).
+    true = the game's dusk. false = the hunt's normal colours in Frenzy 1 to 5 (only the
+    look: enemies, difficulty and rewards stay the Frenzy's). super_frenzy_look: the same
+    for Super Frenzy.
+
+super_frenzy_look = true
+    (goes with the setting above)
+
+cosmetic_chance = { ... }
+    Cosmetic armour: the chance, in percent, that a boss kill drops a piece, by level.
+    frenzy = Frenzy 1 to 5 (main and side hunts), super_frenzy = Super Frenzy 1 to 5. A
+    miss adds that chance to your next boss until one drops (the game's own catch-up). No
+    frenzy keeps the game's 1%. 100 = every boss drops one (while you have pieces left to
+    get). The game's: Frenzy 2 3 4 5 7.5, Super Frenzy 10 12 14 16 20. false = the game's
+    chances.
+      - frenzy = { 10, 20, 30, 40, 100 }
+      - super_frenzy = { 100, 100, 100, 100, 100 }
+
+corestone_bonus = { ... }
+    More corestones, by Frenzy 1 to 5. The game's anomalies have their reward meter (gems,
+    ingots, heart shards); the side hunts you frenzy yourself get extra corestones
+    instead. boss  = extra on the boss kill (the game gives 1 1 2 2 3 at Frenzy 1-5, so
+    this doubles it; nothing extra when the boss gives its heart instead) rooms = extra in
+    a corestone room and from a Teffra Zucco (the game: 1, or 2 in a hard room) hunts =
+    "frenzied_side" (side hunts you frenzied, not anomalies), "all_side" (anomalies too)
+    or "all" (main hunts too; Super Frenzy gets Frenzy 5's numbers) false = the game's.
+      - boss = { 1, 1, 2, 2, 3 }
+      - rooms = { 1, 1, 1, 2, 2 }
+      - hunts = "frenzied_side"
+
+drakin_rewards = { ... }
+    Drakinspawn (the Drakin Armoury Pack's dragon minibosses). The game: a heart shard
+    each, and once you've finished Brother Tendy's quest a 25% chance of one Drakin armour
+    piece (Skyhunter, Marrowdeep: 6 pieces; the quest gives the Immaculate Edge set). The
+    Drakin weapon looks (Drakinlance, Forgeheart, Ashfall Sledge, Wingpiercer, The
+    Brimstone, The Clawboom Stick) drop only in Blight Incursions. Here every Drakinspawn
+    drops pieces while you have some left to get: pieces       = how many each (4: all 12
+    by the end of the quest) during_quest = true: Tendy's own three fights drop them too
+    weapons      = true: the weapon looks drop from them too false = the game's.
+      - pieces = 4
+      - during_quest = true
+      - weapons = true
+
+blight_mirages = true
+    Blight Incursions: the game gives no cosmetic on a boss kill there; its mirages (the
+    Blight's armour sets, the Drakin weapon looks, mirages of gear you own from the hunts
+    you passed) come only from Nimble's Cache, rarely (about 0.2% to 3% a Blight for one
+    particular look). true = every Blight boss drops one while you have some left to get.
+    false = the game's.
+
+super_side_hunts = { ... }
+    Super Frenzy 1 to 5 on the side hunts you frenzy yourself (an experiment). On the map,
+    RB past Frenzy 5 on a side hunt you frenzied yourself (not an anomaly) picks "Super
+    Frenzy 1", then 2 to 5: the panel and the marker turn the game's Super Frenzy dark
+    purple and the tier badge shows that level's tier. The run is the game's Frenzy 5 run
+    (maps, progress, rewards, look) with: enemies    = the game's Super Frenzy level (SF1
+    / 2 / 3 / 4 / 5): health x3.0 / 3.45 / 3.7 / 3.83 / 3.95 (Frenzy 5 x2.8), damage x3.0
+    / 3.45 / 3.7 / 3.95 / 4.2 (x2.8), every enemy that can be elite is elite (55%), the
+    side hunt's boss x7.5 / 8.2 / 8.55 / 8.73 / 8.9 health (x4.9); harder traps (more from
+    SF2), SF4 you start 250 health down, SF5 the higher prices. The boss stays its own one
+    (no elite side bosses, no double miniboss fight) all_hard   = true: every fight room
+    is a hard room (the horned map icon), weapon power and friend gift rooms too loot
+    = x1.5 / 1.75 / 2 / 2.25 / 2.5 by level (or one number for all): Corestones,
+    materials, ingots, seeds and Heart Shards, on top of Frenzy 5's and the hard rooms'
+    (rounded at random: the average is exact) teffra     = false: Teffra (konjur) stays
+    the game's (true: x loot too) unlock_all = true: all five levels open (for testing);
+    false: Super Frenzy 1 is open and each next level opens when you win the one below on
+    that side hunt boss_like_main = true: the boss's end drop starts from a Super Frenzy
+    main hunt boss's Corestones and ingots (6 and 5; Frenzy 5: 5 and 3), then the loot
+    multiplier; false: Frenzy 5's weather    = true (0.10.0): weather side hunts (the
+    game's anomalies) get Super Frenzy 1 to 5 too, RB past Frenzy 5 the same way: the same
+    run with the weather, and each tier of the weather meter gives Frenzy 5's rewards x
+    the loot above (gems and Heart Shards too); false: weather side hunts stop at Frenzy 5
+    imbue_gem  = 5 (0.11.3): the Teffressence Container gem works on the side hunt's boss
+    from this Super Frenzy level (the game's gem: kill the boss with it in your weapon,
+    the weapon can be upgraded past level 10; the game only does it on main hunts). 5 =
+    Super Frenzy 5 only, 1 = every level, false = never (the game's). Two Weapons' second
+    weapon too. false = no Super Frenzy steps (RB stops at Frenzy 5).
+      - enabled = true
+      - loot = { 1.5, 1.75, 2, 2.25, 2.5 }
+      - teffra = false
+      - all_hard = true
+      - unlock_all = true
+      - boss_like_main = true
+      - weather = true
+      - imbue_gem = 5
+
+super_main_loot = { ... }
+    Main hunts at Super Frenzy 1 to 5 (the game's): the game gives the same loot at every
+    Super Frenzy level; here it grows with the level, like the Super Frenzy side hunts
+    (corestones, monster and boss materials, ingots, seeds, heart shards; not boss
+    hearts). teffra = true: Teffra too. false = the game's.
+      - loot = { 1.5, 1.75, 2, 2.25, 2.5 }
+      - teffra = false
+
+super_main_hard = { ... }
+    Main hunts at Super Frenzy 1 to 5: more hard rooms (0.10.0). The game's hard rooms are
+    its harder fights (more and tougher enemies) with its bigger rewards (more Teffra, 2
+    Heart Shards, more materials and Corestones, better power odds), and it shows few of
+    them. Here a step for each Party Gear Level above gear_from (the game's own number,
+    shown on the map; up to gear_max) and each Super Frenzy level above 1: up to 9 steps.
+    Each fight door that isn't hard becomes hard with a chance of steps / 9 (0 steps: the
+    game's, about 1 in 6 fight doors with Hunt Rooms; 4 steps: about half; 9 steps, gear
+    15 at Super Frenzy 5: every fight room hard). Read when the run starts. false = the
+    game's.
+      - gear_from = 10
+      - gear_max = 15
+
+hard_power_rooms = true
+    Weapon power and friend gift rooms made hard by the rules above (Super Frenzy side
+    hunts, the main hunts' extra hard rooms; the game never has them hard): true = they're
+    hard too, and give hard_power_room_teffra more Teffra from the room's kills (35: the
+    game's Teffra for skipping a power); false = they stay the game's (never hard).
+
+hard_power_room_teffra = 35
+    (goes with the setting above)
+
+gold_preview_key = "Ctrl+Shift+Y"
+    The gold preview (0.10.3): this key turns every hunt's map marker gold (the gold side
+    hunt shield, the main hunts' gold one), to see how they look. Visual only: nothing is
+    saved; press it again (or restart the game) for the markers as they are. Modifiers are
+    exact ("Ctrl+Shift+Y" isn't "Ctrl+Shift+Alt+Y"); not while typing. "" = no key.
+
+weather_bonus = { 0, 0, 0, 0, 1 }
+    Weather side hunts (anomalies): the game picks their level (1-4); here you can raise
+    it. Extra rewards from each tier of the weather meter you reach, by Frenzy 1 to 5,
+    drawn from that tier's own bag (gems, Heart Shards, ingots, materials, seeds; the top
+    tier a gem seed too). { 0, 0, 0, 0, 1 } = one more from each tier at Frenzy 5 (about
+    2.5 gems and 2.3 Heart Shards a full meter, instead of 1.6 and 1.8). false = the
+    game's meter at every level.
+
+nimble_bonus = { ... }
+    Nimble's two challenges (the curses he offers at a main hunt's start) both done in one
+    run: at the final market, on top of his Heart Shards, the game's own bonus for that
+    (switched off in the game): a power upgrade, a reroll and an extra life, right before
+    the boss. min_level = from this level: 5 = Frenzy 5 and every Super Frenzy, 6 = Super
+    Frenzy only, 1 = every Frenzy upgrade / reroll / extra_life = how many of each (0 to
+    3) false = the game's (his Heart Shards only).
+      - min_level = 5
+      - upgrade = 1
+      - reroll = 1
+      - extra_life = 1
+
+side_boss_bonus = { ... }
+    Side hunts you frenzy yourself (no weather), Frenzy 1 to 5: the boss gives each hunter
+    more, on top of the extra corestones above: ingots    = the area's ingots (in the
+    boss's own loot) materials = the area's materials (the game's materials room roll) Not
+    the anomalies (they have the weather meter) or Super Frenzy side hunts. false = the
+    game's.
+      - ingots = { 1, 1, 2, 2, 3 }
+      - materials = { 2, 3, 4, 5, 6 }
+
+super_main_shards = { 1, 1, 2, 2, 3 }
+    Main hunts at Super Frenzy 1 to 5, a repeat clear (a level that weapon already cleared
+    there, so no Imbued Heartstone this time): the boss gives each such hunter this many
+    Heart Shards, a fixed number (the Super Frenzy loot multiplier above leaves them
+    alone). Nimble's Heart Shards come on top. false = the game's.
+
+super_skip = { ... }
+    The Super Frenzy level skip, main hunts (0.11.0). The game: the Super Frenzy panel
+    goes one level above what the weapon in your hand has cleared on that hunt, and a win
+    clears one level for that weapon only, one Imbued Heartstone. Here LB / RB on the
+    panel go up to Super Frenzy 5, and a win at Super Frenzy N clears every level up to N
+    for each weapon you hold, with one Imbued Heartstone per level newly cleared per
+    weapon (the boss's drop gives the first, the rest come with the win). The panel shows
+    how many a win gives. unlock = "any_hunt" (mode 2): once any main boss is beaten at
+    Super Frenzy 1 (any weapon; a save that has one already counts), every main hunt goes
+    to 5 with any weapon. e.g. Mother Treek SF1 with hammer and bow, then Bandicoot SF5
+    with both: 10 clears, 10 hearts "this_hunt" (mode 1): a weapon goes to 5 on a hunt
+    once it has cleared Super Frenzy 1 there; a weapon that hasn't gets the game's one
+    level both_weapons = true: Two Weapons' second weapon too (its clears and hearts);
+    false: the weapon in hand only (Progression's one level up for the second weapon, no
+    heart) Progression's liri mode doubles every Imbued Heartstone (its
+    super_frenzy_heart_multiplier), these too. false = the game's.
+      - unlock = "any_hunt"
+      - both_weapons = true
+
+================================================================================================
+Hammer Charge 0.1.3
+File: rotwood-hammer-charge\scripts\hammercharge_settings.lua
+Hammer Charge settings. Edit, save, restart the game. The Sedament hammer's weapon power
+("Light Attacks are Chargeable, and do more Damage") goes on every hammer: hold light attack
+(X) to charge it like the heavy. A full charge (second tier) is a focus hit that knocks down,
+with the game's bonus damage for that power: +300% at weapon level 1, +325% at level 2, +350%
+at level 3 (the hammer's own level decides). The hammer's own weapon power stays too. The
+Sedament hammer works as before (it isn't given the power twice).
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+bonus = { 140, 150, 160 }
+    A full charge's extra damage, in percent, at weapon level 1 / 2 / 3, for the hammers
+    this mod gives the power to (the Sedament hammer keeps the game's +300 / 325 / 350%).
+    A full charged light is a focus hit: Light Attack 1 / 2 / 3 do 1.25 / 1.5 / 1.75 of
+    your weapon damage as focus, so +140% makes them 3.0 / 3.6 / 4.2 (the fully charged
+    heavy: 4.58 focus).
+
+================================================================================================
+Hunt Rooms 0.3.3
+File: rotwood-hunt-rooms\scripts\huntrooms_settings.lua
+Hunt Rooms settings. Change a number, save, restart the game. A value that isn't a number (or
+is out of range) falls back to the default and the log says so ("[Hunt Rooms] setting ...").
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+start_weapon_power = true
+    The start of every hunt, two modes: true   the start room gives its own pick (a normal
+    power, or the Fabled of main hunts and the Blight), then a legendary weapon power
+    choice. With Two Weapons: one for each of your weapons. false  the game's start: a
+    weapon power choice only when the game rolls a weapon power start room (with Two
+    Weapons: one for each weapon then too); a normal start gets nothing extra. Takes
+    effect from the next run you start.
+
+split_sound = true
+    The start's weapon power choice flies out with the crystal's split sound (the crystal
+    already shattered for the start's own pick, so it was silent). false = no sound.
+
+weapon_power_rooms = 4
+    The most rooms a run gives (rooms you take): weapon_power_rooms: legendary weapon
+    power rooms, counting the start (4 = every weapon power a hammer, spear, bow or cannon
+    has) extra_fabled: Fabled rooms on top of the game's own (its start room, its
+    minibosses and its own Fabled doors don't count)
+
+extra_fabled = 3
+    (goes with the setting above)
+
+weapon_power_doors = 2
+    How many times a weapon power door can show up in a hunt, the start's choice not
+    counted. Each one counts the moment it's offered, taken or not: skip it and it's gone.
+    Past it, weapon power doors are normal power doors (an extra room's: Fabled or a
+    normal power). The game's own weapon power doors count too (start_weapon_power =
+    false: a start the game made a weapon power room counts as one). weapon_power_doors:
+    side and main hunts (the game's own: 1) weapon_power_doors_blight: the whole Blight
+    (the game's own: 2)
+
+weapon_power_doors_blight = 3
+    (goes with the setting above)
+
+weapon_power_gap = 1
+    Rooms that come between two weapon power rooms, at least (the start's choice counts as
+    one). 1 = never two in a row; 2 = two other rooms between; 0 = no rule. A weapon power
+    door that would break it is a normal power door (an extra room's: Fabled or a normal
+    power).
+
+fabled_share = 50
+    When a room offers one of the two, the chance (percent) it's Fabled rather than a
+    weapon power (when both can still come).
+
+frenzy_side_rooms = 1
+    Frenzied side hunts (Frenzy 1-5, anomalies too): extra rooms.
+
+super_side_rooms = { 1, 2, 3, 4, 5 }
+    Super Frenzy side hunts (Frenzy Levels): extra rooms by level 1 to 5.
+
+side_room_doors = { fabled = 40, weaponpower = 30, plain = 30 }
+    What an extra side hunt room offers: door weights (one of each at most; the game's 1
+    to 3 doors). 0 = never.
+
+blight_rooms = 2
+    The Blight: extra rooms in each of its two long middle parts, and what they offer (a
+    normal power once both are used up).
+
+blight_room_doors = { fabled = 50, weaponpower = 50 }
+    (goes with the setting above)
+
+blight_weapon_rooms_per_leg = 2
+    The most weapon power rooms in one part (leg) of the Blight: the game's own and the
+    extra rooms' (the start's choice counts in the first part). Past it, that part's
+    weapon power doors are normal power doors. (weapon_power_rooms above still caps the
+    whole Blight.)
+
+blight_miniboss = true
+    The Blight's miniboss (its Fabled pick, the only Fabled the game gives in the long
+    middle parts): every middle part offers it (the game's own roll first; a part without
+    it by its room 5 gets it at the next door choice with a door to give), and its door
+    choice never has a Fabled or weapon power door beside it (those become normal power
+    doors), so you never pick between them. false = the game's (about 1 part in 7 without
+    one, sometimes beside one).
+
+frenzy_main_chance = 25
+    Frenzied main hunts (Frenzy 1-5): the chance (percent) that a door choice with a
+    normal power, corestone, gift or material door gets one of them turned into a Fabled
+    or weapon power door, and the share (percent) of those taken from normal power doors
+    (50: half the hit on normal powers, half on corestone, gift and material doors).
+
+frenzy_main_from_powers = 50
+    (goes with the setting above)
+
+super_main_halve = 50
+    Super Frenzy main hunts: halve: the share (percent) of corestone, gift and material
+    doors that become Fabled or weapon power doors (while those can still come)
+    from_powers: the same for normal power doors (a tiny bit) reward: corestone, gift and
+    material rooms give this many times their reward (2 = twice as rare, twice the reward)
+
+super_main_from_powers = 5
+    (goes with the setting above)
+
+super_main_reward = 2
+    (goes with the setting above)
+
+fabled_never_pair = { "SHIELD", "SUMMON" }
+    The run's 2 Fabled families (the game picks 2 of Electric, Shield, Summon and Frost at
+    every run's start; every Fabled pick of the run offers those two). Never this pair
+    (false: any pair), and this family in fabled_favour_share percent of runs (false: no
+    favourite). With 75: Electric + Shield / Summon / Frost 25% each, Frost + Shield /
+    Summon 12.5% each. The normal powers linked to the Fabled you hold follow on their
+    own.
+
+fabled_favour = "ELECTRIC"
+    (goes with the setting above)
+
+fabled_favour_share = 75
+    (goes with the setting above)
+
+miniboss_fabled = 4
+    The miniboss's Fabled pick (a main hunt's room 9, the Blight's middle parts): this
+    many Fabled powers (2 from each family at 4), plus the normal power as always. 2 = the
+    game's.
+
+miniboss_rewards = true
+    The miniboss's rewards, for each player, on top of what it gives now (its Fabled pick,
+    its own material draw and Teffra): Corestones, the area's ingots, a few of the area's
+    materials (the game's materials room roll) and Teffra, by the hunt's level: normal,
+    Frenzy 1-5, Super Frenzy 1-5, the Blight. Frenzy Levels' Super Frenzy loot multiplier
+    and Progression's pickups apply as to any drop. false = the game's.
+
+miniboss_corestones = { normal = 1, frenzy = { 1, 1, 1, 1, 2 }, super = { 2, 2, 2, 2, 2 }, blight = 2 }
+    (Corestones: the game's Corestone room drop when the room is cleared, at most 5)
+
+miniboss_ingots = { normal = 0, frenzy = { 1, 1, 2, 2, 3 }, super = { 4, 4, 4, 4, 4 }, blight = 3 }
+    (goes with the setting above)
+
+miniboss_materials = { normal = 1, frenzy = { 1, 1, 2, 2, 2 }, super = { 3, 3, 3, 3, 3 }, blight = 2 }
+    (goes with the setting above)
+
+miniboss_teffra = { normal = 10, frenzy = { 14, 18, 22, 26, 30 }, super = { 34, 38, 42, 46, 50 }, blight = 30 }
+    (goes with the setting above)
+
+shard_room = { 40, 45, 50, 55, 60 }
+    The Heart Shard room (Super Frenzy side hunts, Frenzy Levels): the chance (percent)
+    each extra room's doors have one, by Super Frenzy level 1-5, offered until you walk
+    into one (then never again that hunt), and the Heart Shards it gives each player (a
+    fixed number). 0 (or false) = none.
+
+shard_room_shards = { 1, 2, 3, 4, 5 }
+    (goes with the setting above)
+
+debug = false
+    Log every room the mod changes ("[Hunt Rooms] ..." in client_log.txt).
+
+================================================================================================
+Player Colours 0.2.8
+File: rotwood-player-colours\scripts\playercolours_settings.lua
+Player Colours settings. Restart the game after changing this file.
+================================================================================================
+
+enabled = true
+    false = the whole mod is off (colours you picked stay in the save and come back when
+    it's on again)
+
+colour_tab = true
+    the PLAYER COLOUR tab in the character screen (the mirror in town)
+
+fx = true
+    the ring under your feet, the aim arrow and the other per-player effects (acid,
+    poison, jam ball target, ...) follow the colour too. false = only the HUD / names /
+    brackets change, effects stay vanilla
+
+red_ring = "steps"
+    Red's ring under your feet: "steps" (its inner circle shows), "deep" (0.2.2's),
+    "bright" (full red, the inner circle melts into it)
+
+farm_signs = true
+    (0.2.8) the leaf on the farm plot signs follows the plot owner's colour. false = the
+    signs keep the game's colours
+
+debug = false
+    extra lines in client_log.txt
+
+================================================================================================
+Powers First 0.1.0
+File: rotwood-powers-first\scripts\powersfirst_settings.lua
+Powers First settings. Restart the game after changing this file.
+================================================================================================
+
+enabled = true
+    false = the mod is off (the game's own behaviour)
+
+only_own_powers = false
+    false = everyone waits until every player has picked (power choosing is over for the
+    room). true  = a player who has picked can use NPCs and the rest again while the
+    others still pick; only the powers that player can still take keep them switched off
+    for them.
+
+include_crystal = false
+    true = also switched off while the power crystal is waiting to be hit (before the
+    powers come out)
+
+allow = {}
+    things never switched off, by prefab name (players, so you can revive them, and the
+    powers themselves never are). Example: allow = { "healing_fountain" },
+
+================================================================================================
+Progression 0.4.3
+File: rotwood-progression\scripts\progression_settings.lua
+Progression settings. Restart the game after changing this file.
+================================================================================================
+
+mode = "liri"
+    The switch: "off"        the game as it is "permanent"  everyday play: Super Frenzy
+    boss kills give the boss's gear "liri"       in between: Super Frenzy boss kills give
+    all the boss's gear at once, more Super Frenzy hearts, corestones and gifts, and one
+    market armour piece gives the whole set "nightly"    game night: a condensed Rotwood
+    (back up your save first, its unlocks and gear stay in the save)
+
+permanent = { ... }
+    mode = "permanent": each player who's there when a main boss dies on Super Frenzy
+    gets:
+      - weapons = true
+          the boss's weapon for the 2 weapons you hold: the one in hand and the Two
+          Weapons swap weapon (without Two Weapons, just the one in hand)
+      - morphic_set = true
+          the 3 Morphic armour pieces (Crown, Breastplate, Greaves), the first time
+      - gems_per_kill = 1
+          this many of the boss's Morphic gem per kill, up to the game's cap of 3
+      - super_frenzy_only = true
+          false: any level counts, not just Super Frenzy (for trying it out)
+      - super_frenzy_heart_multiplier = 1
+          Super Frenzy hearts (Imbued Heartstones): picking one up gives this many.
+          1 = the game's own amount, up to 20. They upgrade boss weapons (level 11
+          to 15, 1 heart + 10 of the hunt's ingots per level).
+      - super_frenzy_heart_cap = 30
+          With the multiplier above 1: its extra hearts stop once you have this many
+          of that boss's Imbued Heartstones, counting the ones held and the ones
+          already in its weapons (1 for each of its weapons you have, 1 for each
+          upgrade past level 11). 30 = all that boss's weapons need: 6 weapons x (1
+          to make + 4 upgrades); the game gives one per Super Frenzy clear, 6
+          weapons x 5 levels = 30. The game's own hearts are never cut, only the
+          extra. 0 = no cap.
+      - super_frenzy_both_weapons = true
+          With Two Weapons: clearing a Super Frenzy level counts for both weapons
+          you hold (the game counts only the one in hand). Each weapon type goes one
+          level up from its own record, like the game does.
+
+liri = { ... }
+    mode = "liri": each player who's there when a main boss dies on Super Frenzy (any
+    Super Frenzy level) gets the boss's weapon for the 2 weapons they hold, the 3 Morphic
+    pieces and all 3 of the boss's Morphic gems.
+      - weapons = true
+      - morphic_set = true
+      - gems_per_kill = 3
+          3 = all of them at once
+      - super_frenzy_only = true
+      - super_frenzy_heart_multiplier = 1
+          Super Frenzy hearts (Imbued Heartstones): picking one up gives this many
+          (1 to 20). 1 = single, as the game: one per clear (they're per clear and
+          have no use past what the boss's weapons need)
+      - super_frenzy_heart_cap = 30
+          the multiplier's extra hearts stop once you have this many of that boss's
+          Imbued Heartstones: held + already in its weapons (1 per weapon you have +
+          1 per upgrade past 11). 30 = all its weapons need; 0 = no cap
+      - super_frenzy_both_weapons = true
+          clearing a Super Frenzy level counts for both weapons you hold
+      - corestone_multiplier = 3
+          every corestone pickup gives this many times as much (1 to 5)
+      - gift_multiplier = 2
+          every Gift-Wrapped Souvenir pickup gives this many times as much (1 to 5)
+      - market_full_set = true
+          buying one armour piece at the market gives the whole set
+
+nightly = { ... }
+    mode = "nightly":
+      - pick_any_level = true
+          Map: LB / RB (the game's "previous / next tab" buttons) picks the level of
+          the hunt you're looking at: Normal, Frenzy 1-5, and Super Frenzy 1-5 on
+          main hunts (side hunts have no Super Frenzy boss). Only hunts you've
+          unlocked; Blight Incursions are left as the game has them (they open after
+          the final boss).
+      - boss_gear = true
+          Beating a boss at any level puts its gear in your inventory (each player):
+          every boss and miniboss: its weapon for all 6 weapon types main bosses:
+          the 3 Morphic armour pieces, their look (mirage) and all 3 of their
+          Morphic gems the final boss: the 3 Morphic armour pieces minibosses: their
+          armour set
+      - all_weapon_types = true
+          All 6 weapon types unlocked from the start, each with its basic weapon.
+      - double_pickups = true
+          Everything you pick up counts double except Teffra: materials, corestones,
+          Gift-Wrapped Souvenirs, heart shards, Super Frenzy hearts, Glitz.
+          (Heartstones stay single: one unlocks the boss's talents, a second does
+          nothing.)
+      - double_amount = 2
+      - market_full_set = true
+          Buying one armour piece at the market gives the whole set.
+
+debug = false
+    (goes with the setting above)
+
+================================================================================================
+Save States 0.5.1
+File: rotwood-save-states\scripts\savestates_settings.lua
+Save States settings. Every value here can be changed; a value that isn't valid falls back to
+its default (the log says which).
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+keys = { ... }
+    Keys. A slot key is the modifiers + a number-row key (1 to 9 and 0 = slot 10). The
+    modifiers have to match exactly: Ctrl+Shift+1 isn't Ctrl+1.
+      - save = "Ctrl"
+          Ctrl+1 .. Ctrl+0: save to slot 1 .. 10
+      - rebuild = "Ctrl+Shift"
+          Ctrl+Shift+1 .. 0: load that slot, Rebuild
+      - replicate = "Ctrl+Alt"
+          Ctrl+Alt+1 .. 0: load that slot, Replicate
+      - latest_rebuild = "Ctrl+L"
+          the latest auto save (slot 0), Rebuild
+      - latest_replicate = "Ctrl+Alt+L"
+          the latest auto save, Replicate
+      - menu = "Ctrl+Shift+Alt+1"
+          the hidden history tabs in the Codex (with none open: Saved Hunts with
+          them)
+
+keep_debug_text_size = true
+    With the game's debug keys on, Ctrl+1 .. Ctrl+4 also set the debug menu's text size.
+    true: those presses only save (the text size stays).
+
+manual_history = 1000
+    History: every manual save is kept here too, the oldest deleted first.
+
+auto_save = true
+    Every room you enter saves to slot 0 and to this list (the oldest first out).
+
+auto_history = 100
+    (goes with the setting above)
+
+auto_save_delay = 1.0
+    seconds after the room starts
+
+undo_before_load = true
+    Your state just before every load goes to the auto history, so a load can be undone.
+
+fade_load = true
+    A load fades the screen to black first, like the start of a run (the game's own fade).
+
+align_players = true
+    The full-screen Saved Hunts: each player's line in columns, the same on every save (a
+    long name drawn smaller to fit, a short one with room after it; extra lives, rerolls
+    and potions always shown, 0 when not unlocked, no potion = the HUD's plain potion).
+    Only the drawing: no save changes.
+
+same_room = true
+    A load gives the saved room its own enemies again: the same encounter, special
+    encounter and Frenzy extra as when it was saved (the game draws a room's enemies when
+    it starts; a load without this draws the next ones instead). Saves from before 0.5.0
+    still draw again. false: the game draws the room's enemies again on every load.
+
+replicate_lend = false
+    Replicate: the gear you don't own is given to you with its saved level, gems and
+    mirage (the one exception to "never touch the character"). true: lent for the run
+    instead, and taken back when the run ends (experimental).
+
+restore_loadout_after_run = true
+    Replicate: your own gear goes back on when the run ends.
+
+restore_counters = true
+    The run counters on powers your talents and gear give: extra lives left, starting
+    Teffra already taken, skill charges.
+
+exact_hp = true
+    The saved HP is set again after the room's own "on entering" effects.
+
+notes = true
+    short notes on screen
+
+codex = true
+    The Saved Hunts tab in the camp's Codex (the book at the camp's entrance): every slot
+    with its hunt, Frenzy level, each player's HP, extra lives, Teffra, rerolls, potions,
+    powers and the room, and a LOAD button.
+
+codex_tab_first = true
+    the first tab (the Codex opens on it); false: the last
+
+pause_menu = true
+    The pause menu's SAVE HUNT (in a run: save into slots 1-10, overwrite them) / LOAD
+    HUNT (in town): the Codex opens on Saved Hunts. false: no button.
+
+pause_menu_screen = "full"
+    What that button (and Ctrl+Shift+Alt+1 with no menu open) opens: "full"
+    (experimental) one full screen for everyone, the pause menu's look: the players on
+    top, the saved hunt's map, the saves on the right. Its CODEX VIEW button opens the
+    Codex's view. "codex" the Codex, on its Saved Hunts tab (one per player). If the full
+    screen can't open, the Codex's view opens (the log says why).
+
+debug = false
+    (goes with the setting above)
+
+================================================================================================
+Skill Balance 0.2.16
+File: rotwood-skill-balance\scripts\skillbalance_settings.lua
+Skill Balance settings. Restart the game after changing this file. Damage numbers are
+multipliers: x your weapon damage (a hammer light hit is 1). Set a section to false to leave
+that skill the game's way.
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+melee_skills = { ... }
+    The ranged weapons' melee skills: Battering Ram (Cannon), Thwack (Bow), Crosscheck
+    (Spear). Their damage = light_attack_mult x that weapon's own light attack (Cannon
+    shot 1.25, Bow quick shot 0.85, Spear 1st hit 0.9). The game: Battering Ram 0.5,
+    Thwack 0.6, Crosscheck 0.45. knockdown = true: the hit knocks enemies over (Thwack and
+    Crosscheck already do; Battering Ram only pushed). pushback = how far: x the enemy's
+    own distance, at 1.0 small enemies fly 4, medium 3, large 2 (light enemies about 3x
+    that, heavy ones and bosses barely move). The game: 1.5.
+      - light_attack_mult = 1.5
+      - knockdown = true
+      - pushback = 1.75
+
+parry = { ... }
+    Trickster's Gambit (parry)
+      - window_seconds = 0.67
+          how long the parry catches attacks (the game: 0.43)
+      - crit_seconds = 3
+          100% crit chance after a parry (the game: 2)
+      - counter_damage = 1.0
+          the enemy you parry takes this x weapon damage (0 = no counter hit)
+      - counter_pushback = 1.75
+          and gets knocked over this far (same scale as above)
+      - counter_range = 6
+          only an enemy this close (not a far-off shooter)
+
+order_in_the_court = { ... }
+    Order in the Court (Hammer): tap / half charge (held 8+ frames) / full charge (held
+    16+ frames, about 0.5 s). The game tunes it like the hammer's charged heavy: 1.66 /
+    2.5 / 2.91, Focus 2.5 / 2.91 / 4.58, radius 3 / 3.25 / 4. Now a touch over the fully
+    charged heavy (2.91, Focus 4.58) at full charge. (0.2.0 had 2.0 / 3.0 / 4.0, Focus 3.0
+    / 3.75 / 6.0; 0.2.1 1.8 / 2.7 / 3.3, Focus 2.7 / 3.25 / 5.0.)
+      - damage = { 1.7, 2.55, 3.0 }
+      - focus_damage = { 2.55, 3.0, 4.75 }
+      - radius = { 3.25, 3.5, 4.5 }
+
+pole_vault = { takeoff = 0.5, landing = 2.0 }
+    Pole Vault (Spear): the hit taking off / landing. The game: 0.33 / 1.0
+
+dribble = { damage = 1.75, focus_damage = 2.5 }
+    Dribble (Striker): the slam / a Focus slam. The game: 1.15 / 1.75
+
+hazard_idol = { health_cost = 10 }
+    Hazard Idol (Hammer): health it costs to summon. The game: 25. (The Idol still heals
+    whoever breaks it for 25; its description keeps saying 25.)
+
+impulsive_stomp = { damage = 2.5 }
+    Impulsive Stomp (Greatsword). The game: 2.0 (plus its meter bonus)
+
+grody_groak_gulp = { damage = 0.25 }
+    Grody Groak Gulp: each of its many tiny hits. The game: 0.1
+
+mini_parry = { ... }
+    Mini parry: a perfect guard at the start of one quick skill per weapon, treated like
+    the Greatsword's perfect guard (until tested in game). A hit in its first
+    window_frames (30 per second; the Greatsword's guard window is 5) does damage_taken of
+    its damage (the Greatsword's: 0.02 = 2%), you don't flinch (the skill goes on and its
+    own hit is the counter), and you get the perfect guard's spark, shudder and
+    protections (hit streak kept, the enemy's on-hit effects skipped). Owlitzer's Morphic
+    gem fires like on a perfect guard. Not Parry's crit buff, nothing of the Greatsword's
+    own. Each skill can be turned off: false.
+      - window_frames = 5
+      - damage_taken = 0.02
+      - crosscheck = true
+          Spear
+      - thwack = true
+          Bow
+      - battering_ram = true
+          Cannon
+      - order_in_the_court = true
+          Hammer
+      - dribble = true
+          Striker
+
+big_blast = { ... }
+    Big Blast (Cannon). shell = "game": the game's shots and damage (six shells in a fan,
+    4 / Focus 5 each, times your weapon damage); only the charge time and the tap are
+    changed: charge_ticks = a charge every this many ticks (60 a second; the game: 25) tap
+    = the charges a quick tap fires (let go before the first charge; the game fires
+    nothing then). 0 = the game's way. The 0.2.4 big shell is still there: shell = "one"
+    (all the charges in one shell through every enemy, damage / focus_damage a charge,
+    end_blast = an explosion at the end, perfect_ticks = a Critical Hit released on the
+    flash, max_size = its size); shell = "fan": six shells, spread = the fan's angle times
+    this, damage / focus_damage each. (big_blast = false: the game's Big Blast, charge
+    time and tap too.) tap_damage = a tap shell's damage, times a Big Blast shell's (0.5 =
+    2 x your weapon damage, like a Mortar shell; 1 = full) tap_refund = false: a tap shell
+    gives no ammo back when it hits (the game's Cannon reloads one shot for every skill
+    shell that hits, so a tap that hit was free); true: it does
+      - tap_damage = 0.5, tap_refund = false }
+
+throw_rock = { damage = 18 }
+    Throw Rock: the stone's damage a hit (a fixed number, the game: 9; Critical Hits scale
+    from it).
+
+snap_attacks = { damage_mult = 2 }
+    Greatsword Snap Attacks (Snap Tap, Snap Back): their damage times this (the game: Snap
+    Tap 2.1, Snap Back 6.0 / 6.5 times your weapon damage).
+
+sharpened_reflexes = { any_attack_after_block = true, guard_window_seconds = 30 }
+    Sharpened Reflexes (Greatsword skill: uses up your meter for a bonus hit, an
+    explosion, and a longer Perfect Guard window). any_attack_after_block = true: after
+    your next block (any block), your next attack that lands sets off the explosion (the
+    game: only a Snap Attack, which needs a full meter or a Perfect Guard; the skill
+    empties the meter). false: the game's. guard_window_seconds = how long the longer
+    Perfect Guard window lasts after the skill at most: it ends sooner once the explosion
+    has gone off (0 = the game's: until your next Snap Attack ends).
+
+backfire = { damage = { 0.86, 3, 4.57 }, focus_damage = { 1.29, 4, 5.71 }, reach = 1.75, radius = 1.2 }
+    Cannon Backfire (the skill during the plant / reload: uses up your ammo). damage /
+    focus_damage = { 1-2 ammo, 3-4 ammo, 5-6 ammo } (times your weapon damage; the game:
+    0.5 / 3 / 4, Focus 0.75 / 4 / 5) reach = how much further the blast in front of you
+    reaches (the game's blast: a box from 2 to 4 ahead; 1.75 = from 1 to 7 ahead, 2 = 1 to
+    8) radius = how much wider the box is (the game's: 5 across, 2.5 to each side; 1.2 = 6
+    across, 1.4 = 7) (The slide afterwards hits as the game's.)
+
+community_garden = { heal = 30, damage_per_stock = 4000, max_stocks = 3, full_heal = 100, dummy = true }
+    Gourdo's Community Garden (the miniboss skill). Hold the button: each pulse heals you
+    and the allies near you by heal and uses one stock; let go to stop. Stocks come back
+    one per damage_per_stock damage you deal, up to max_stocks. full_heal: using all
+    max_stocks stocks in one hold heals this much in all (the last pulse heals the rest:
+    30 + 30 + 40 = 100; 0 = off). (The game: heal 20, a stock per 1000 damage, 3 stocks.)
+    dummy = true: hitting the training dummies in town earns stocks too (the game counts
+    only enemies and breakable props, so in town a used stock never came back). false: the
+    game's.
+
+voice_of_the_myriad = { damage_per_stock = 2000, max_stocks = 1, seconds = 6, dummy = true }
+    Thatcher's Voice of the Myriad (the bow skill): for seconds your hits coat enemies in
+    Toxic. The game has no limit: its stock comes back 0.1 s after it wears off, and
+    pressing it while it's on starts it again. Here its stock comes back from damage, like
+    the Garden's: damage_per_stock damage dealt after it wears off (nothing counts while
+    it's on), up to max_stocks, and no recast while it's on. Its icon shows the recharge
+    ("45%"; blank = ready). dummy = true: training dummy hits count too. false: the
+    game's.
+
+eggsabre_run = { run_bonus = { 60, 70, 80 } }
+    Shellwalker's Eggsabre (the Greatsword from Sedament's tundra): with it sheathed you
+    run faster, in percent, for the weapon's level 1 / 2 / 3 (its tooltip shows it). The
+    game: 25 / 30 / 35. Two Weapons gives every weapon 30% sheathed, so this one is the
+    runner: 60 / 70 / 80.
+
+stall_log = { seconds = 0.5 }
+    Stall log (changes nothing): when the game freezes for longer than seconds, one line
+    in client_log.txt starting "[Skill Balance] the game stopped for" with what you did
+    just before (states, skill hits, mini parries), to find what caused it. (The game's
+    clock counts whole seconds, so the time lost is worked out from the frames each
+    second.) false = off.
+
+guard = true
+    Bulletproofing: an error inside Skill Balance's part of the game (the parry hold, Big
+    Blast's tap and crits) is logged ("[Skill Balance] error in ...") and that part
+    skipped, instead of the game's error screen ending the run. false: errors go to the
+    game as before.
+
+================================================================================================
+Skill Limits 0.5.2
+File: rotwood-skill-limits\scripts\skilllimits_settings.lua
+Skill Limits settings. Restart the game after changing this file.
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+charges = 5
+    A limited skill has this many uses. Every use restarts the rest timer; when it runs
+    out (refill_seconds after the last use) all uses come back.
+
+refill_seconds = 5
+    (goes with the setting above)
+
+skills = { ... }
+    The limited skills. true = the numbers above, or give one its own: miniboss_groak = {
+    charges = 3, refill_seconds = 8 }, count = "hit": only uses that hit something count
+    (misses are free, the rest timer starts at the hit). Works for Javelin Backstab. false
+    or leaving it out = unlimited. Skills that have a limit of their own (Hypershot, Fan
+    of Gnarlics, Holder of Shinies (6 s cooldown), Bastion Volley (10 shots that come
+    back), Gourdo's Community Garden, Crystroll's Ice Puke, Banana Peel) are never
+    touched.
+      - boss_megatreemon = true
+          boss skills Mother of Methuselah
+      - boss_owlitzer = true
+          Keeper of the Moon
+      - boss_thatcher = true
+          Voice of the Myriad (the game's limit: 0.1 s)
+      - boss_eggzy = true
+          Eggsplosion (the game's cooldown never starts)
+      - miniboss_yammo = true
+          miniboss skills Big Yammo Slammo
+      - miniboss_floracrane = true
+          Floracrane's Divebeak
+      - miniboss_groak = true
+          Grody Groak Gulp
+      - miniboss_embison = true
+          Embison's Turn Around Punch
+      - miniboss_bonejaw = true
+          Bonejaw's Charge
+      - hammer_explodingheavy = true
+          charge-ups (one charge = one charge-up) Unstable Equilibrium
+      - polearm_javelin = { charges = 2, count = "hit" }
+          (the bow's arrow skills use ammo instead: bow_arrow_ammo below) weapon
+          skills Javelin Backstab: misses are free, 2 hits
+
+bow_arrow_ammo = 2
+    The bow's arrow skills (Toxic Dip, Cold Plunge, exploding arrow) use ammo, like the
+    game's Banana Peel and Gourdo's Community Garden: each special arrow fired takes one,
+    dealing damage (enemies, breakable props, the training dummies in town) earns them
+    back. The skill icon shows the arrows left. (2 arrows / 1500: the special arrows stay
+    full strength but rare) arrows in the quiver (0 = no ammo, unlimited)
+
+bow_arrow_damage_per_arrow = 1500
+    damage dealt to earn one back (the game's bananas / garden use 1000)
+
+bow_arrow_shared = true
+    true  = one quiver for all your arrow skills (2 arrows in all, whichever skill fires
+    them) false = each arrow skill has its own 2
+
+bow_arrow_free_dip_cooldown = 15
+    Out of arrows: one free dip (the button does the arrow dip, only the dip, and that
+    makes one arrow), then this many seconds until the next free dip. Meanwhile the button
+    does nothing (an X over your head) and the icons go grey with the seconds left. 0 = a
+    free dip every time, -1 = no free dip.
+
+instant_bow_skills = true
+    true  = the arrow skill's button goes straight into a heavy shot. Hold it and release
+    when the bow is charged for a Focus shot: that shot carries the special arrow (1
+    ammo). Any other release = a normal heavy shot, free. false = the game's way: dip the
+    arrow, your next heavy shot carries it (1 ammo when it's fired). Out of arrows: the
+    free dip above.
+
+show_charges_left = false
+    the skill icon: false = a number only while out of uses (seconds until they're back,
+    like the game's cooldown skills); true = also the uses left
+
+blocked_sound = true
+    the game's "no charge" sound when pressing a skill with no uses left, and its "charge
+    back" sound when they come back
+
+refill_sound = true
+    (goes with the setting above)
+
+debug = false
+    extra lines in client_log.txt
+
+================================================================================================
+Skill Slots 0.16.4
+File: rotwood-skill-slots\scripts\skillslots_settings.lua
+Skill Slots settings. Edit, save, restart the game. B starts as your weapon's own skill (it
+changes with the weapon, like vanilla). Each slot below is a button with its own skill
+(defaults until you pick in the menu): B = the game's skill button, LT = left trigger, RT =
+right trigger, RS = right stick click "weapon" = the weapon's own skill (changes with the
+weapon, like vanilla B). Each weapon type (Hammer, Bow, ...) has its own loadout of all four
+buttons: switching weapons switches the skills. The menu sets the loadout of the weapon in
+hand; "slots" below is where every weapon's loadout starts. To move parry to LT, swap the
+names: LT = "parry", RS = "buffnextattack". Use "none" (or delete the line) to leave a slot
+empty. Universal skills (work with any weapon): parry, throwstone, bananapeel, buffnextattack,
+throwsnowball (holiday) miniboss_yammo, miniboss_floracrane, miniboss_groak, miniboss_gourdo,
+miniboss_crystroll, miniboss_embison, miniboss_bonejaw boss_megatreemon, boss_owlitzer,
+boss_thatcher, boss_sedament, boss_eggzy, boss_grimhollow Weapon skills (hammer_totem,
+polearm_vault, ...) and boss_thatcher (a bow skill) only work with that weapon in hand; on a
+slot they rest while you hold another. Tested so far: parry, throwstone. Boss skills may react
+to other skills' events until the event filter is added. RS-click was the game's build button;
+with Controller Layout build is on D-pad down and RS-click is free for a skill.
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+stations = { "rustic_weapon_rack", "rugged_weapon_rack", "pergola", "tree_winter_2024", "dummy_kuma" }
+    Skill stations: press interact (RB) on one of these decorations in town to open the
+    skill slot menu. Your picks are saved with your character and replace the "slots"
+    defaults below. rustic_weapon_rack = Rugged Weapon Rack, rugged_weapon_rack = Rustic
+    Weapon Rack (the game swaps those two names), pergola = Pergola, tree_winter_2024 =
+    Wintertide Tree, dummy_kuma = Kuma's Scare-Rot
+
+rack_menu = true
+    The blacksmith's weapon racks (by Hamish's forge): hold interact (RB) on one for
+    "Customize Skills", once that rack's weapon is unlocked (then a tap opens your
+    weapons, as before; while a rack still takes corestones it's the game's deposit only).
+    false = off.
+
+forge_rack = true
+    The weapon rack inside Hamish's forge (the hut): stand by it and press interact (RB)
+    for "Customize Skills". false = off.
+
+unlock_stations = true
+    true = the station decorations show in the build menu right away (the game normally
+    unlocks them later: biome exploration, Kuma's friendship, the winter event). Building
+    one still costs its materials.
+
+menu_button = { gamepad = "", keyboard = "H" }
+    Opens the same menu anywhere in town, no station needed. gamepad: "DPAD_UP",
+    "DPAD_DOWN", ... or "" for none. keyboard: a key or "". (If the button is also bound
+    to something else, the menu won't open on it and client_log.txt says which.) The
+    controller has none by default: build is on D-pad down (Controller Layout), customize
+    town on D-pad up (the game's options) and Tonic Swap has left / right. To get one
+    back, free one of those first, then name it here (e.g. gamepad = "DPAD_UP").
+
+all_skills = false
+    Any skill can go on a slot (Show all in the menu lists them all, for trying them out).
+    true = also count every skill as owned, so Hide unavailable only hides other weapons'
+    skills.
+
+hide_other_weapons = true
+    true = the menu always opens with "Hide unavailable" on: other weapons' skills and
+    skills you don't own are hidden. "Show all" (X in the menu) shows everything until the
+    menu closes. false = it always opens with Show all. Owned = comes with a weapon in
+    your inventory, or you have it right now. Boss and miniboss skills and Parry count per
+    weapon type: a weapon's loadout lists them only if you own that boss's weapon of that
+    type. (Only a filter: any skill works on a slot, owned or not.)
+
+class_icons = true
+    Skills of no weapon get a class too, by their name and on their tile: boss and
+    miniboss skills the game's boss icon ("Boss" / "Miniboss"), the rest (Fist Pound,
+    Throw Stone, Parry...) its any-weapon icon ("Any"). false = no icon or tag for them.
+
+list_names = false
+    The names over the skills in the menu's list ("Hammer", "Any", "Miniboss"...). false =
+    off each time the menu opens; true = on. "Names" (LB, keyboard Q) switches them while
+    the menu is open (not kept).
+
+icon_scale = {}
+    Skill pictures that run over their round frame, drawn smaller in the menu and on the
+    HUD (1 = the game's size), e.g. { throwstone = 0.9 }. (Throw Snowball's own icon is
+    drawn inside its frame now.)
+
+hidden_skills = { "hammer_reflectinglights" }
+    Skills the menu never shows, even with Show all (the game's unfinished ones that don't
+    work).
+
+explosive_dive = true
+    Two of the game's unfinished skills, finished. Explosive Dive (the Bow's "[TEMP]
+    bow_primearrow_explode"): your next Heavy Attack explodes where it lands (the game's
+    friendly pinecone bomb). Name, description, icon, Hypershot's pink dip fx and sparks
+    on the arrow while primed. false = the game's stub.
+
+explosive_dive_trail = true
+    the primed arrow flies with a pink crit trail (false = no trail)
+
+explosive_dive_prime = "anim"
+    Explosive Dive's prime (the game's dip fx only lines up with the prime animation, so
+    it could hang above your head on its own): "anim"    the pink spark (Hypershot's dip
+    fx) while the prime animation plays (the arrow raised: it sits on it, as drawn); go
+    straight into the Heavy Attack (or dodge, run) and the spark goes, what's left of its
+    sparkle moves onto the arrow "arrow"   pink sparks come onto the arrow, a short pink
+    burst on it when it's primed (they follow the arrow, whatever the animation) "vanilla"
+    the game's prime animation, no dip fx (the arrow's sparks still show it's primed)
+    "quick"   the prime animation at twice the speed, then straight into the Heavy Attack
+    shot with the exploding arrow
+
+explosive_dive_shot = "STRONG"
+    "quick": the shot's strength, like a held Heavy Attack: "WEAK", "MEDIUM", "FOCUS" (the
+    perfect-timing shot) or "STRONG" (full charge)
+
+bow_prime_dip = "anim"
+    Cold Plunge and Toxic Dip (the game's frost and acid prime): their dip fx is its own
+    animation drawn to match the prime animation, so when that doesn't show, its spark
+    hangs over your head. Four ways: "anim"  = the game's spark while the prime animation
+    plays (lined up as drawn); go straight into the Heavy Attack (or dodge, run) and the
+    spark goes, what's left of its sparkle moves onto the arrow "arrow" = the dip's own
+    sound, and its own frost / acid trail and burst put on the arrow, at the dip's own
+    moments (only the dip's drawing left out) "plain" = the dip's sound and the game's
+    sparks on the arrow, no burst "game"  = the game's dip fx as it is (the spark over the
+    head)
+
+snowball = true
+    Throw Snowball (the game's holiday skill): endless snowballs, each one scooped off the
+    ground, that knock enemies back and make them Cold; enough Cold Freezes them. Enemies
+    only. false = the game's (3 throws, then it only shrugs "RELOAD!").
+
+snowball_cold = 150
+    Cold per hit: 600 Freezes (150 = 4 hits; the game's frost snowball: 300)
+
+snowball_damage = 0
+    damage, x your weapon's: 0 = none (the game's snowball), 1 = full (its frost snowball)
+
+snowball_speed = 25
+    how fast it flies (the game's snowball: 25, its frost snowball: 15)
+
+snowball_in_hand = true
+    the snowball in your hand while you throw, not the stone (false = the stone)
+
+snowball_hand_symbol = ""
+    the snowball art's symbol for the hand: "" = the ball, "ice_core_untex" (the game's
+    snowball art, fx_projectile_snow_ball)
+
+snowball_finish_throw = true
+    true: the stick can't cancel the scoop, the throw always comes (Throw Stone's way);
+    false: the game's (moving cancels it from its 6th frame)
+
+finish_skill_swing = true
+    Game fix: some skills (Order in the Court and others) restart from their first frames
+    when you keep pressing the skill button, so the swing never plays out. true = pressing
+    the skill again while it's swinging waits for the swing to finish, then the skill
+    starts again. false = the game's way.
+
+greatsword_block = false
+    Weapon choices: moves of one weapon you can put on a button in the menu (each weapon's
+    loadout), like a skill. Not on any button = the game's way. These lines say where each
+    one starts; false = on no button. Your picks in the menu win over these.  Greatsword
+    "Block": its block (the dodge button with no direction) on "LT", "RT", "RS" or "B".
+    With Block on a button, the dodge button always rolls (forward with no direction). On
+    B, B only blocks: put the Greatsword's skill on LT / RT / RS (its attack-into-skill
+    combos follow it).
+
+cannon_dodge = "RS"
+    Cannon "Dodge": the Cannon's roll (it has one in its files the game never plays) on
+    "LT", "RT" or "RS". The dodge button stays the Cannon's own (plant, reload while
+    planted). Starts on RS for testing.
+
+cannon_reload = false
+    Cannon "Reload": the Cannon's plant / reload (what its dodge button does) on "LT",
+    "RT" or "RS"; the dodge button rolls instead.
+
+cannon_roll_iframes = 0
+    The Cannon roll's invincibility: every roll is invincible for the game's roll frames
+    (12 at normal weight, 7 light, 10 heavy) plus a weapon bonus: Bow and Striker 0,
+    Hammer, Spear and Greatsword 1. This is the Cannon roll's bonus (0 = exactly like Bow
+    / Striker, 1 = like the melee weapons). Only the roll: the Cannon's Blast keeps its
+    own bonus.
+
+cannon_roll_combos = true
+    Roll into an attack: light (X) / heavy (Y) during the Cannon roll. true  = mid-roll: X
+    = Air Shot (keeps the roll's momentum), Y = Quick Rise (stop and punch); stick back:
+    turn, then Air Shot behind / Air Blast (launches you on in the roll's direction). As
+    you land: X = normal shot, Y = Blast (stick back: turn, then the Battering Ram swing /
+    a Blast that dashes you on). The game's own chains follow (X / Y after an air shot).
+    false = the normal shot / Blast all through the roll.
+
+cannon_roll_swing = true
+    The landing's stick-back X: the Battering Ram skill's swing (false = a normal shot
+    behind).
+
+mannequin_loadouts = true
+    The game's mannequin loadouts remember your skill buttons (every weapon's), saved when
+    you save the loadout, put back when you equip it. false = loadouts don't touch your
+    skill buttons.
+
+slots = { ... }
+    Where every weapon's buttons start (until you pick in the menu). buffnextattack = Fist
+    Pound (crit chance), throwstone = Throw Stone.
+      - B = "weapon"
+      - LT = "buffnextattack"
+      - RT = "throwstone"
+      - RS = "parry"
+
+players = { ... }
+    Per-player changes, by player number (1-4). Only list what differs. Example: player 2
+    gets bananapeel on RT: [2] = { RT = "bananapeel" },
+
+keyboard = { ... }
+    Keyboard keys for the slots (keyboard player only).
+      - LT = "U"
+      - RT = "I"
+      - RS = "O"
+
+hide_powers = { ... }
+    Slot icons on the player HUD, with their button on each icon. show = false starts them
+    hidden (each player can switch them in the menu: "HUD icons"). layout = "cluster": the
+    four skills next to the portrait like the controller: RS and RT on top, B and LT under
+    them (the top row shifted sideways), every icon with its button. The weight class
+    moves to a small badge after your name, and the power rows and the town's weapon tips
+    move past the cluster (to the left on right-side HUDs). "zigzag": they carry on the
+    game's honeycomb (weight icon, skill icon, then LT / RT / RS, each half an icon
+    sideways) along the screen edge, clear of the power rows. "row": in a row next to the
+    skill icon. size = "full" (same as the weapon skill icon) or a width like 90. cluster:
+    gap = space between icons, shift = how far the top row sits sideways (0.5 = half a
+    step), rise = extra space above B / LT. skill_scale = how big the four skill icons are
+    drawn (the game's B icon and the slots; 1 = the game's skill icon size). power_scale =
+    how big the powers past the cluster are drawn (1 = the game's size); power_gap = space
+    between the skills and the powers. class_badge = false keeps the weight circle off
+    (cluster only). tips_gap = space between the cluster and the town's weapon tips.
+    tips_margin / tips_min_scale: with 2+ players, a player's tips stay in their half of
+    the screen (tips_margin from the middle); tips that would reach further are drawn
+    smaller to fit, down to tips_min_scale. overlap = how much each icon tucks into the
+    one before (zigzag; the game uses 10). spacing = gap between icons (row layout). x / y
+    = extra offset of the slot icons if they cover something. bar_clears_name = false: the
+    health bar starts at the portrait's edge like the game's (it covers the end of a long
+    name and its badges); bar_gap = space between the name's box and the bar. name_fit =
+    false: the game's name (font 40, cut at 160 wide with "..."). On (cluster): weapon
+    badge + name + class badge stay on the portrait: a long name gets a smaller font, down
+    to name_min_font, then is cut with "...". name_margin = space kept on the health bar's
+    side. lives_after_bar = false: the extra lives (wings) under the health bar's start
+    like the game's (the cluster's top row covers them). On (cluster): at the bar's end,
+    lives_gap away. Hide / show the power rows of the HUD (your powers' icons at the top),
+    always with a smooth fade: gamepad: each player's own rows, in runs ("DPAD_DOWN"; "" =
+    none). In town the game hides them anyway (D-pad down is build there). hide_all /
+    show_all: keyboard keys for every player's rows ("" = none; modifiers allowed, e.g.
+    "Ctrl+SEMICOLON"). ; and ' by default: keys nothing else uses (with the game's debug
+    keys on, - and = do debug things: = hides the ground). The game's key names:
+    SEMICOLON, QUOTE, SLASH, F5, A..Z, ... boss_auto_hide: "boss" = every player's rows
+    fade out when a boss wakes up and back when it's beaten (or the room's cleared); "all"
+    = minibosses too; false = never. Showing them yourself during the fight keeps them
+    shown for it. fade_time: seconds for each fade (0 = at once). small_gamepad: each
+    player's power icons smaller, one step a press: full size, then each of small_sizes,
+    then full again ("DPAD_UP"; "" = none; in runs: in town D-pad up is customize town).
+    small_all: a keyboard key doing it for every player ("SLASH" = /). small_sizes: the
+    smaller sizes, in order (up to 4). Smaller icons get more rows in the height of the
+    game's 2: 0.66 = 3 rows, 0.5 = 4 rows (2 / size), filled evenly, so they stack in a
+    block next to the skills. { 0.5 } = one size only (D-pad up toggles it). Each player's
+    choice stays with their character from room to room. hide_powers = false: off.
+      - gamepad = "DPAD_DOWN"
+      - hide_all = "SEMICOLON"
+      - show_all = "QUOTE"
+      - boss_auto_hide = "all"
+      - fade_time = 0.35
+      - small_gamepad = "DPAD_UP"
+      - small_all = "SLASH"
+      - small_sizes = { 0.66, 0.5 }
+
+hud = { ... }
+    (a group of settings: its entries follow)
+      - show = true
+      - layout = "cluster"
+      - size = "full"
+      - cluster = { gap = 24, shift = 0.4, rise = 0, skill_scale = 1.1, power_scale = 1.3, power_gap = 8 }
+      - class_badge = true
+      - tips_gap = 25
+      - tips_margin = 30
+      - tips_min_scale = 0.5
+      - overlap = 10
+      - spacing = 10
+      - x = 0
+      - y = 0
+      - bar_clears_name = true
+      - bar_gap = 10
+      - name_fit = true
+      - name_min_font = 26
+      - name_margin = 10
+      - lives_after_bar = true
+      - lives_gap = 12
+
+guard = true
+    Bulletproofing: an error inside Skill Slots' part of the game (a button press, a
+    skill, the Cannon roll, Block, the HUD, loadouts) is logged ("[Skill Slots] error in
+    ...") and that part skipped, so the game does it its own way that moment instead of
+    showing its error screen and ending the run. false: errors go to the game as before.
+
+================================================================================================
+Stick Aim 0.1.1
+File: rotwood-stick-aim\scripts\stickaim_settings.lua
+Stick Aim settings. Save, then restart the game.
+================================================================================================
+
+enabled = true
+    false: the mod does nothing at all (the same as switching it off)
+
+default_mode = "emotes"
+    what a player's right stick does until they switch it: "aim" or "emotes"
+
+toggle = true
+    BACK + right stick click switches that player's right stick between AIM and EMOTES
+
+toggle_note = true
+    a note on screen says which ("Player 1: right stick aims")
+
+close_status = true
+    BACK opens your status panel as you press it: closed again after the switch
+
+remember = true
+    keep each player's choice for the next game (stickaim_modes.txt in the save folder)
+
+aim_at = 0.35
+    how far the stick has to be pushed to aim (0-1), and how far back to stop aiming
+
+release_at = 0.2
+    (goes with the setting above)
+
+swap_buttons = true
+    while aiming, the buttons trade places (preset below); false: they stay as they are
+
+preset = 1
+    (goes with the setting above)
+
+player_presets = {}
+    a preset per player slot, e.g. { [2] = 1 } (player 2 uses preset 1); others use
+    "preset"
+
+presets = { ... }
+    button = what it does while aiming (the button whose job it takes). Buttons: A B X Y
+    LB RB LT RT
+
+================================================================================================
+Tonic Swap 0.7.13
+File: rotwood-tonic-swap\scripts\tonicswap_settings.lua
+Tonic Swap settings. Edit, save, restart the game. D-pad right = next tonic, D-pad left =
+previous. The tonic is drunk together with your potion (LB). Potions menu: press interact (RB)
+on a tonic station in town (the Potion Table, or the Ironwork Illuminator). Each player picks:
+Potion (top): Soothing Spirits, Bubbling Brew or Misting Mixture (in town). Tonics (one grid):
+A = in / out of the cycle, X = main tonic (equipped right away, first in the cycle), Y =
+disable cycling (only the main tonic) or put every tonic in. All nine out = no tonic. Saved
+per character. Never opened the menu = no tonic. Tonics: zucco_dash, mudslinger, full_shield,
+shrink, yammo_rage, explotion, juggernaut, projectile_repeat, freeze (resolve1 does nothing,
+so it's left out.)
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+gamepad = { prev = "DPAD_LEFT", next = "DPAD_RIGHT" }
+    (goes with the setting above)
+
+keyboard = { prev = "COMMA", next = "PERIOD" }
+    (goes with the setting above)
+
+free_dpad = true
+    Stop the D-pad left/right from also walking.
+
+popup = true
+    Show your potion and tonic above your head for a moment after a swap.
+
+skip = {}
+    Tonics to leave out for everyone (not in the menu either), e.g. skip = { "shrink" },
+
+order = { ... }
+    The menu's grid order, left to right, row by row (the D-pad cycle goes the same way).
+    Tonics not listed come after, in the game's order. Rows by colour: blue Bulbug Boba
+    (shield), Freeze, Run speed; red the popping candy (explotion) and the two
+    projectiles; yellow Shrink, Grow (juggernaut), Damage (yammo_rage).
+
+tonic_colours = true
+    Freeze and Run speed (zucco_dash) drawn blue and Grow (juggernaut) yellow, like the
+    rest of their row (the game's icons recoloured to the row's palette,
+    images/tonicswap_tonics). false = the game's icons.
+
+potion_table = true
+    The Potion Table: Doc Hoggins' travelling table with all three potions on it (and his
+    SALE! sign), a tonic station you build in town: Build menu, Furniture or Usable.
+    Interact (RB) opens the potions menu. It costs what the structure in
+    potion_table_cost_like costs ("bench_basic" = the Hewn Bench). false = no Potion Table
+    (pick placed ones up first: they go away with it).
+
+potion_table_cost_like = "bench_basic"
+    (goes with the setting above)
+
+stations = { "lamp_volcano_1" }
+    More tonic stations: town decorations that open the tonic menu (interact / RB). The
+    Potion Table is always one. lamp_volcano_1 = Ironwork Illuminator (Lights)
+
+unlock_stations = true
+    true = the stations show in the build menu right away (the Ironwork Illuminator is
+    normally a Grimhollow exploration reward). Building one still costs its materials.
+
+main_at_run_start = false
+    true = every run starts on your main tonic (false = you keep the one you had on when
+    the run starts).
+
+out_with_power = { iron_brew = { "full_shield" } }
+    Tonics that sit out of your cycle while you have a power that does their job: power =
+    { tonics }. Iron Brew gives 4 Shield Segments every drink, like Bulbug Boba
+    (full_shield), so with it Boba sits out: the D-pad skips it and, if you have it on,
+    you get the next tonic in your cycle. It's back when the power goes (town, a new run),
+    on again if you still have that next one on. Your menu choices stay as they are. false
+    = off.
+
+potions = true
+    Potions: the tonic menu's Potion column, picked in town. Bubbling Brew and Misting
+    Mixture are finished in the game's files but hidden; true = all three are yours from
+    the start.
+
+gem_refill_fix = true
+    The Alchemist's Gem (Perfect Pairing's gem: more potion healing) refilled your whole
+    potion every time the game set your gear's powers up again (a weapon or armour bought
+    at the market, your gems levelling up at the end of a hunt, Two Weapons' both-weapons
+    gems): the game's bug, it runs the power's refill with no number, which means
+    "everything". Now it only heals more, as its text says. The Perfect Pairing power
+    still refills when you take it. false = the game's.
+
+potion_bottles = "own"
+    Their bottles in the drink animation: "own"      = the mod's art (anim and images
+    folders): a round flask and a crystal decanter drawn from Soothing's bottle and the
+    icons, the bottle smash in their glass colours, and empty HUD icons like Soothing's
+    "recolour" = Soothing's bottle and the game's smash in their colours, the game's HUD
+    icons (if "own" shows a missing bottle) "soothing" = Soothing's bottle and the game's
+    smash as they are
+
+potion_hud_icons = "mix"
+    The HUD's potion icons with "own" bottles: "mix"     = higher-contrast full and empty
+    icons (the originals mixed half and half with a Soothing-like version: solid glass, a
+    darker rim on the fluid, white shines, a thicker outline) "classic" = the game's full
+    icon and the mod's dark empty icon (0.7.8) "game"    = the game's own full and empty
+    icons
+
+tonic_fx = true
+    The tonics' effects in the game's current art (false = as the game made them): Ice
+    Cold Slushie freezes with the ice prison (the old one only greyed enemies out; bosses
+    get Cold instead), Battoad Eggs and Chocolate Foam shoot the Shrapnel projectile,
+    Popping Candy uses the small explosion.
+
+tonic_freeze_style = "browse"
+    Ice Cold Slushie: how the freeze plays out (with tonic_fx). "nova"    the Legendary
+    Frost power's frost nova: the full-screen frost burst, then enemies freeze one after
+    another, nearest first, the further ones quicker (all frozen within 0.4 s) "ripple"  a
+    big frost burst at you; each enemy freezes as the wave reaches it (further away =
+    later), a small burst on each "chill"   the frost burst; enemies go cold first (blue-
+    grey, slowed), then freeze a moment later "instant" everyone at once "browse"  a
+    different one each time you use it, its name shown over you (and in client_log.txt) -
+    try them, then pick one here A second use while the first still plays waits for it,
+    then plays in full; uses close together keep the style ("browse" moves on after a
+    pause of 2 seconds).
+
+tonic_explode_scale = 0.5
+    Popping Candy's explosion (it goes off every second for 10 seconds): its size (1 = the
+    small explosion's own size, 0.5 = half) and whether its ground blast goes off too
+    (true / false).
+
+tonic_explode_ground = false
+    (goes with the setting above)
+
+tonic_explode_enemy_blasts = false
+    The game also bursts a bomb hit on every enemy the explosion hits (one blast per enemy
+    on top of the explosion): true brings those back.
+
+tonic_rage_damage = 200
+    Tonic numbers. Spicy Pumpkin Seeds: your damage for its 5 seconds, in % of normal (200
+    = double; the game: 1000 = ten times). Battoad Eggs: each projectile's damage (the
+    game: 50). 0 = the game's number.
+
+tonic_eggs_damage = 100
+    (goes with the setting above)
+
+tonic_clean_text = true
+    true = take "[TEMP]" off the tonics' names and descriptions.
+
+status_potion_look = true
+    The status panel (the player status button: your loadout over your head):
+    status_potion_look = the potion slot gets the blue patterned background of an item
+    slot and a bigger bottle (status_potion_scale times the game's); false = the game's
+    plain dark square. status_potion_full = true shows the potion's full picture even with
+    no drinks left (the game shows the empty bottle; the count still shows 0).
+
+status_potion_scale = 1.35
+    (goes with the setting above)
+
+status_potion_full = false
+    (goes with the setting above)
+
+hud_potion_backing = true
+    The HUD (your panel in the corner): the dark frame's left piece is made just wide
+    enough to cover the tonic icon next to the potion (it stuck out past the frame's
+    slanted corner). false = the game's frame.
+
+drink_lift = 110
+    While you drink a potion, the health bar and potion icon over your head move up this
+    much so they don't cover the drinking animation (the game puts the bar 360 over your
+    feet and the icon 440). A press with no charges left leaves them where they are. 0 =
+    off.
+
+tonic_size_allies = true
+    Shrink and Juggernaut as your tonic: allies within your potion's reach (where its heal
+    reaches them) shrink or grow with you, for the room, with the game's spore burst on
+    them. false = only you (the game's).
+
+tonic_size_allies_minions = false
+    and the players' summoned / charmed fighters too
+
+talent_picture = "hud"
+    The potion picture in the talent menu (Field Medicine's charges): "hud"       = your
+    potion's HUD bottle, as big as the game's picture, next to the number (the loadout
+    summary and descriptions show the game's HUD icon for it, small) "hud_small" = the
+    game's HUD icon for it everywhere (small) "inventory" = its inventory icon everywhere
+
+bubbling_sips = 2
+    Bubbling Brew: 100 health a sip. Sips per charge (your tonic comes with every sip),
+    and how much of flat heal bonuses (Potent Brew) each sip gets.
+
+bubbling_flat_share = 0.5
+    (goes with the setting above)
+
+bubbling_hud_sips = true
+    Bubbling Brew on the HUD, the character panel and the potion over your head: the
+    number counts sips (3 charges show 6, a sip takes one off). Only the number: the game
+    still counts charges (max, refills, talents). false = the game's count (charges).
+
+bubbling_per_potion = true
+    Bubbling Brew: powers that react to drinking (Iron Brew's shield, the frost freeze,
+    Cleaver berserk, Forbidden Drink / Diluted Medicine's counters, Immorel's refills)
+    count once a potion, so its only extra is the tonic with every sip; a free drink (the
+    shop's potion drunk on the spot, the potion event when you're full) is a whole
+    potion's healing. false = they count every sip, a free drink is one sip.
+
+menu_text_size = 1
+    The menu's details box (the potion / tonic under the cursor): its text size, times the
+    mod's (1 = name 60, description 52, buttons 42; the first versions used 44 / 36 / 32).
+    A long description still shrinks to fit the box.
+
+potion_heal_log = false
+    Probe: each drink writes how its heal was worked out to the game's log ("[Tonic Swap]
+    potion heal: ..."): base, flat bonuses and the share of them, % bonuses, the hunt's
+    multiplier, the result. false when done.
+
+potion_heals = "current"
+    Trial potion heals (not on yet). Each potion with no Potent Brew -> with Potent Brew
+    10: "current"          Soothing 250 -> 500, Bubbling 100 a sip (200 a charge) -> 225
+    (450), Misting 300 -> 600 "experimental"     Soothing 300 -> 600, Bubbling 125 (250)
+    -> 250 (500), Misting 350 -> 700 "experimental_375" the same, Misting 375 -> 750 (37.5
+    a heal; the game rounds each heal down, so 370 with no Potent Brew) (An experimental
+    set replaces misting_heal / misting_flat_share below.)
+
+misting_heal = 30
+    Misting Mixture: health per heal and how many heals (one when you drink, then one
+    every second). A drink gets misting_flat_share times the flat heal bonuses (Potent
+    Brew), spread over its heals: 1.2 = each Potent Brew rank adds 3 a heal, 30 a drink
+    (rank 10: 60 a heal, 600 a drink).
+
+misting_heals = 10
+    (goes with the setting above)
+
+misting_flat_share = 1.2
+    (goes with the setting above)
+
+misting_restart = true
+    true = drinking it again while it heals starts the heals over and keeps the healing
+    that was left (the game wastes that drink).
+
+misting_allies = "link"
+    Misting and your allies (each heal also heals allies near you by their share):
+    misting_allies = "link": an ally a heal reaches gets their share every second for the
+    rest of that drink, wherever they go. "game": only who's next to you at each heal.
+    What each heal shows (from the second; drinking shows the game's ring): misting_pulse,
+    on the ground at you: "wave" = the green heal area grows out from you to your reach,
+    stays a moment and fades "ring" = the game's drink ring every heal; "none" = nothing
+    misting_glow = true: everyone it heals glows green, like drinking, with a small green
+    heal burst misting_beams = true: a green heal beam from you to each ally it heals
+    (Gourdo's seed beam, the one the Head Hunter power shows) misting_marks = true: the
+    small green ring around the feet of everyone it heals (you, linked allies, allies in
+    reach) Too much? Turn off any of them.
+
+misting_pulse = "none"
+    (goes with the setting above)
+
+misting_glow = true
+    (goes with the setting above)
+
+misting_beams = true
+    (goes with the setting above)
+
+misting_marks = true
+    (goes with the setting above)
+
+misting_beam_style = "chain"
+    The beam to a far ally (a linked ally can be across the room). The game's beam is one
+    small picture drawn bigger the longer the beam, so far away it was blown up and
+    blurry. misting_beam_style: "chain" = near allies (up to about 9 units) get the game's
+    beam as it is; farther, a chain of the game's small beams, each about
+    misting_beam_piece units (the picture at the size it was made for), one after another
+    from you to the ally, misting_beam_ripple seconds apart (0 = all at once), at most
+    misting_beam_max_pieces "thin"  = one beam at the game's length, thinner (down to
+    misting_beam_min_width of the game's width past misting_beam_full_until units) and
+    fainter: looks stretched "game"  = the game's beam at any distance "chain" and "thin":
+    fully visible up to misting_beam_fade_from units, fading to misting_beam_min_alpha at
+    misting_beam_fade_to (on your screen), no beam past misting_beam_max_distance units (0
+    = always).
+
+misting_beam_piece = 6
+    (goes with the setting above)
+
+misting_beam_max_pieces = 8
+    (goes with the setting above)
+
+misting_beam_ripple = 0.04
+    (goes with the setting above)
+
+misting_beam_full_until = 6
+    (goes with the setting above)
+
+misting_beam_min_width = 0.3
+    (goes with the setting above)
+
+misting_beam_fade_from = 8
+    (goes with the setting above)
+
+misting_beam_fade_to = 30
+    (goes with the setting above)
+
+misting_beam_min_alpha = 0.3
+    (goes with the setting above)
+
+misting_beam_max_distance = 50
+    (goes with the setting above)
+
+guard = true
+    Bulletproofing: an error inside Tonic Swap's part of the game (a drink, the potion
+    count, the tonic menu press, the bottle colours, the talent pictures) is logged
+    ("[Tonic Swap] error in ...") and that part skipped, so the game does it its own way
+    that moment instead of showing its error screen and ending the run. false: errors go
+    to the game as before.
+
+================================================================================================
+Two Weapons 1.0.14
+File: rotwood-two-weapons\scripts\twoweapons_settings.lua
+Two Weapons settings. Edit, save, restart the game. Your two weapons: the one in hand and the
+other one. Equipping a weapon the normal way (armory, shop mannequin, town rack, debug menu)
+changes the one in hand; the other stays. With only one weapon so far, the first new one you
+equip becomes your second. The swap button flips between the two. Saved per character. The
+swap works wherever a dodge would: standing, running, and the moments an attack can be dodge-
+cancelled. A press slightly early is kept for a moment.
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+mannequin_loadouts = true
+    The game's mannequin loadouts remember your other weapon: saving a loadout keeps the
+    pair, equipping it gives you that pair back (the loadout's weapon in hand, the saved
+    one as your other). Like the loadout's gear, a change counts only once you save the
+    loadout again. false = loadouts only change the weapon in hand (the game's way).
+
+gamepad = "LS"
+    gamepad button: "LS" = left stick click
+
+keyboard = "M"
+    keyboard key (keyboard player). M is used by none of the game's controls or debug keys
+    (with cheats / the console on, R reruns your last console command, T teleports you to
+    the mouse, Shift+X opens a debug panel; the log warns if the key you set is one of
+    them).
+
+puff = true
+    the dodge-cancel puff that hides the swap
+
+puff_offset = -1
+    puff position: -1 is the game's own (a bit forward, made for dodges), 0 = centered
+
+buffer_frames = 6
+    how long an early press waits for a dodge window, in animation frames (30 per second)
+
+remember = true
+    weapon memory: each weapon keeps what it had going while you hold the other one
+    (Greatsword meter, Cannon ammo, skill stocks and cooldowns, weapon / gem power
+    counters). Lasts for the run. false = vanilla resets.
+
+both_weapons_gems = { sustain = true, support = true, damage = false }
+    Both weapons' gems: the game only counts the gems of the weapon in your hand, so max
+    health, healing, protection, luck... went up and down with every swap. The gem types
+    set true here count from BOTH weapons, whichever one you hold (the same gem on both
+    adds up, like two on one weapon). Damage gems are about how their weapon hits, so they
+    stay with it to start. false = the game's way (only the weapon in hand).
+
+both_weapon_powers = true
+    A weapon power for each weapon: the weapon power room (the choice of two Legendary
+    powers that change one of a weapon's moves) only offers powers for the weapon in your
+    hand. Take one, and a second choice flies out of the same crystal for your other
+    weapon (rolled the game's way, the same number of powers); take one of those too. It
+    works when you swap to that weapon. Both choices are set when the crystal breaks (the
+    first for the weapon in your hand then, the second for the other one): swapping during
+    the room changes neither. true = in every weapon power room, "first_room" = only when
+    it's the run's first room, false = the game's way (one choice).
+
+both_weapon_powers_same_type = false
+    Two weapons of the same type (two Hammers): one choice, since a Hammer power works
+    with either. true = a second Hammer choice too (not the power you took, nor the one
+    you passed on).
+
+weapon_power_limit = "double"
+    How many weapon powers you keep. The game keeps 4 (made for one weapon) and a new one
+    past that takes the place of your oldest. "double" = twice the game's (8: 4 for each
+    weapon), a number, false = the game's.
+
+weapon_power_fill = true
+    A weapon has only so many weapon powers (Cannon, Hammer, Bow, Spear: 4). When a choice
+    has fewer left than your usual number (the Cannon gets 2 weapon powers at most: its
+    three ammo powers exclude each other), the rest is filled with other powers; a weapon
+    with nothing left gets a whole choice of them as its turn, and your other weapon keeps
+    its own weapon power choice. "weapon" = your other weapon's weapon powers first (as
+    1.0.7); "normal" = normal powers only (as 1.0.2); false = the choice as it is
+    (possibly empty).
+
+weapon_power_fill_fabled = 50
+    Of those other powers, the percent that are Fabled (the rest normal).
+
+power_spacing = true
+    Power pedestals never on top of each other: with two players and 3-4 powers each
+    (Choosey gems, a filled choice) the game's circles meet in the middle of the room;
+    here they move out from the crystal until no two pedestals are closer than 3.5
+    (tighter circles if the room runs out), staying on walkable ground. false = the game's
+    spots.
+
+split_sound = true
+    Your other weapon's choice flies out with the crystal's split sound, the one the first
+    choice has (the crystal is gone by then, so it was silent), played from you. false =
+    no sound.
+
+market_weapons = true
+    The market's weapon stands: each hunter's weapon in hand first, this hunt's weapon of
+    that type when that hunter doesn't own it yet (player 1 the first stand, player 2 the
+    second); then the game's own order: pieces nobody has, then pieces one of you has,
+    then pieces you all have (only when there's nothing else for that stand). false = the
+    game's.
+
+gem_screen_swap = true
+    The swap button (left stick click / M) works in the gem screen (Modify Weapon Gems,
+    its weapon tab): your weapons swap and the panel shows the other one's gem slots.
+    false = close the screen to swap, as the game.
+
+berserk_carry = true
+    The Greatsword's Berserk carries over when your other weapon is a Greatsword: its
+    timer runs, your attacks with either weapon add time, its speed, armour and
+    uninterruptible attacks stay, you stay red; its Berserk weapon powers work with it as
+    your other weapon too. It ends with its timer, or when neither weapon is a Greatsword.
+    false = a swap ends it.
+
+second_weapon_imbue = true
+    The Teffressence Container gem (kill an Imbued Boss Rot at the end of a Super Frenzy
+    hunt: the gem is used up and its weapon can be upgraded past level 10). The game does
+    it only for the weapon in your hand; here your second weapon's gem works on the same
+    kill too (the game's own imbue, on that weapon, with its "Imbued!" note). false = the
+    hand weapon only.
+
+carry_charges = true
+    charged skills follow you: a skill charged up and waiting for its trigger keeps its
+    charge after a swap, and the other weapon sets it off (Unstable Equilibrium: the other
+    weapon's next Heavy Attack that hits; Eggsplosion: the next hit; Voice of the Myriad:
+    poison while it lasts). Spent there, it's gone; swap back first and it's still
+    charged. false = it stays with its weapon (comes back charged when you swap back).
+
+rb_sheathe = true
+    RB (keyboard F) with nothing to interact with sheathes your weapon during runs too,
+    like in town. Attacking draws it again. Uses the game's own option for this (a
+    Greatsword gear piece normally turns it on).
+
+sheathed_run_bonus = 30
+    with your weapon sheathed you run faster, in percent (the Greatsword gear piece that
+    gives RB sheathe, Shellwalker's Eggsabre, gives 30). Not in town (the game already
+    gives +50% there) and not while wearing that gear piece (its own bonus counts
+    instead). 0 = off.
+
+swap_attacks = true
+    swap attacks: the swap comes out attacking with the new weapon swap during a dodge (or
+    with A)   -> Mixed set swap with Y (held or tapped)      -> Heavy set swap with X
+    (held or tapped)      -> Aerial set swap with B (held or tapped)      -> Skill set
+    swap standing still               -> plain swap Each player can turn them on / off in
+    Skill Slots' menu (saved per character); this is the starting value.
+
+b_moves = "custom"
+    B's swap attack: "custom" = each weapon's own move (Order in the Court, vault
+    strike...), "skill" = whatever B fires with the new weapon (its skill)
+
+spear_b = "crosscheck"
+    other moves to pick for some buttons: Spear B: "vault" (vault strike) or "crosscheck"
+    (the push-away skill)
+
+greatsword_b = "snapback"
+    Greatsword B: "snapback" (snapback counter) or "overhead" (overhead heavy slam)
+
+swap_turn_with_stick = true
+    Which way swap attacks face: X / Y / B face where the stick points. A (the dodge)
+    comes out of the dodge going its way, unless the stick points back the other way: then
+    it turns to the stick first, like the game's own moves (dodge one way, push the stick
+    the other way, attack). false: A always keeps the dodge's way (before 0.7.13).
+
+hammer_a = "fade_swing"
+    A (the dodge) comes out of the dodge going its way. The other moves are still here to
+    pick: Hammer A: "fade_swing" (the fade-away swing facing the dodge's way, its hop
+    carrying you on along it), "fade_swing_turned" (turned around: hops the dodge's way,
+    swinging behind you, 0.7.2-0.7.5), "fade_swing_back" (it hops back against the dodge,
+    as before 0.7.0) or "jump_slam" (the jump slam forward, 0.7.0-0.7.1)
+
+hammer_fade_distance = 2
+    how far the fade-away swing hops: 1 = the game's own hop (about 1.15 units), 2 = about
+    2.1 units (0.8.2), up to 4
+
+bow_a = "leap_shot"
+    Bow A: "leap_shot" (Weapon Moves' leap shot forward; without Weapon Moves the game's
+    forward jump shot) or "backflip" (the old backflip shot)
+
+greatsword_a = "bash"
+    Greatsword A: "bash" (the Gut Bash, its lunge, the dodge's way), "dodge_heavy" (the
+    game's forward roll into its heavy swing) or "quick_heavy" (the old 5-frame quick
+    swing)
+
+cannon_a = "roll_blast"
+    Cannon A: "roll_blast" (the Cannon roll the dodge's way, then the Blast ahead, still
+    facing the dodge's way, its kick launching you on along it), "roll_blast_turned"
+    (turned around: the Blast fired back the way you came, 0.7.2-0.7.5), "roll_blast_back"
+    (the Blast ahead, launching you back against the dodge), "roll_shot" (the roll, then
+    the normal shot ahead), "mortar" (mortar lob) or "shockwave" (shockwave slam). The
+    roll ones need Skill Slots (its Cannon roll); without it they do the mortar lob.
+
+followup_frames = 10
+    Pressing them together works in any order, within these windows (animation frames, 30
+    per second): A / X / Y this soon after a plain swap still makes it a swap attack
+
+combo_frames = 10
+    X / Y / A pressed this soon before the swap counts as held
+
+swap_chain_limit = 2
+    Swap attacks in a row. Swapping mid-attack into a swap attack is instant, and so is
+    swapping mid-way through that one (2 in a row: hammer heavy -> spear heavy -> hammer
+    heavy). A swap during the last one allowed in a row waits until that attack has
+    finished (you're out of attacks, or the game starts your next move: the next hit of a
+    combo, a dodge, a skill), and at least swap_chain_wait seconds after it started. Then
+    swaps are instant again. swap_chain_limit = swap attacks in a row before the wait (0 =
+    no limit) swap_chain_wait  = the least wait, in seconds swap_chain_hold  = false: a
+    press during the wait is ignored (press again after); true: it's kept and swaps as
+    soon as the wait is over
+
+swap_chain_wait = 0.5
+    (goes with the setting above)
+
+swap_chain_hold = false
+    (goes with the setting above)
+
+swap_repeat_full = 2
+    The same strong swap move again and again (spear multi-thrust <-> bow, ...). Each
+    strong swap move counts by itself (per weapon and move): the first swap_repeat_full
+    times in a row do full damage, from the next one on its own hits do swap_repeat_factor
+    of their damage (arrows / shells it fires too). swap_repeat_window seconds without any
+    swap attack: full again. Strong = the game's heavy attacks and skills (the multi-
+    thrust is a heavy); light swap moves (Cannon quick shot, the bow's light shots, the
+    dodge moves) are never reduced, and neither are normal attacks or the combos you carry
+    on afterwards. swap_repeat_full   = times at full damage (2: the 3rd is reduced)
+    swap_repeat_factor = the reduced damage (0.59 = 59%: about what that weapon's light
+    attacks deal in the same time; 1 = off) swap_repeat_window = seconds without a swap
+    attack before it's full again swap_repeat_also   = more moves to count as strong, by
+    state name, e.g. { "rolling_drill_attack_pre", "cannon_plant_pre" } swap_repeat_skip
+    = strong moves left alone (never reduced). Here: hammer Y spinning flip slam and its A
+    jump slam, spear jump thrust, vault strike and crosscheck, Cannon whack, bow jump shot
+    and melee bash swap_damage_log    = true: every minute, client_log.txt gets each
+    weapon's light attacks' and swap moves' damage per second ("[Two Weapons] damage
+    rates"), to set the factor from; false: off
+
+swap_repeat_factor = 0.59
+    (goes with the setting above)
+
+swap_repeat_window = 2.5
+    (goes with the setting above)
+
+swap_repeat_also = {}
+    (goes with the setting above)
+
+swap_repeat_skip = { ... }
+    hammer Y flip slam, A jump slam
+
+swap_damage_log = false
+    (goes with the setting above)
+
+debug = false
+    true = write what each swap press does to client_log.txt ("[Two Weapons] debug:")
+
+smooth_swap = true
+    Smooth swap: the HUD's redraws (your player panel) wait one tick and happen once, and
+    the max health announcements are skipped when the number didn't change (the game sent
+    them every swap: about 14 of a swap's 21 ms). The weapon still changes at once. false
+    = the game's way.
+
+swap_timing = false
+    Swap timing (changes nothing): for the first 40 swaps, one line each in client_log.txt
+    with how long the swap took and where the time went.
+
+starting_pair = true
+    A new character starts with two random basic weapons instead of the game's Hammer (and
+    the Spear in the bag): the first in hand, the second your other weapon, picked from
+    this list ("in hand + other"; hammer, spear, greatsword, striker, cannon, bow). Only a
+    character you just made; existing ones keep theirs. false = the game's starting
+    weapons.
+
+starting_pairs = { ... }
+    (a group of settings: its entries follow)
+
+starting_pair_unlocks_racks = true
+    ...and those two weapons' racks in camp are unlocked for that character (as if you'd
+    paid their Corestones). false = the racks stay as the game has them.
+
+guard = true
+    Bulletproofing: an error inside Two Weapons' part of the game (a press, a loadout, a
+    new run) is logged ("[Two Weapons] error in ...") and that part skipped, instead of
+    the game's error screen ending the run. false: errors go to the game as before.
+
+================================================================================================
+UI Scale 0.2.0
+File: rotwood-ui-scale\scripts\uiscale_settings.lua
+UI Scale settings. Restart the game after changing this file. Each size: 1 = the game's own
+size, 0.85 = 85%, 0.75 = 75%, from 0.5 to 1.5 (above 1 is bigger). A size picked in the game
+(Options > Graphics, the keys or the console) is used instead of these while remember = true.
+================================================================================================
+
+enabled = true
+    false = the mod is off (the game's own sizes)
+
+character_info = 0.85
+    your character info in the corner: portrait, name, health, skills, potion, currencies
+    (the other players' corners too). It shrinks toward its own corner.
+
+power_popup = 0.85
+    the power details over a power you can pick up (and in the shop, at the wanderer)
+
+popup_prompt = "all"
+    the prompts (the line over you that says what the button does) take the power popup's
+    size: "all"     every prompt: Take / Reroll, Talk, the mirror, the stations, Revive
+    (camp and hunts) "pickups" only at a pickup (Take / Reroll) "none"    the game's size
+    (a conversation's speech balloons always keep the game's size)
+
+whole_interface = 1
+    the whole interface: menus, map, text, HUD (0.1.0's way). 1 = left exactly as the game
+    has it.
+
+remember = true
+    remember the sizes picked in the game
+
+options_rows = true
+    the size rows in Options > Graphics
+
+key_character_bigger = "Ctrl+="
+    keys (not while typing in the console). The modifiers have to match exactly; "" = no
+    key. Bigger / smaller also work with the number pad's + and - (with the same
+    modifiers). character info 5% bigger
+
+key_character_smaller = "Ctrl+-"
+    character info 5% smaller
+
+key_character_reset = "Ctrl+Shift+="
+    character info at the game's own size
+
+key_popup_bigger = "Ctrl+Alt+="
+    power popup 5% bigger
+
+key_popup_smaller = "Ctrl+Alt+-"
+    power popup 5% smaller
+
+key_popup_reset = "Ctrl+Alt+Shift+="
+    power popup at the game's own size
+
+key_whole_bigger = ""
+    whole interface (no keys unless you add them)
+
+key_whole_smaller = ""
+    (goes with the setting above)
+
+key_whole_reset = ""
+    (goes with the setting above)
+
+step = 0.05
+    how much one key press changes a size
+
+console_command = true
+    the console command: c_uiscale(0.8) the character info, c_uiscale("popup", 0.8),
+    c_uiscale("whole", 0.9), c_uiscale() the sizes now
+
+================================================================================================
+Weapon Moves 0.2.22
+File: rotwood-weapon-moves\scripts\weaponmoves_settings.lua
+Weapon Moves settings. true = on, false = the game's own way. Changes take effect the next
+time the game starts a run (mods reload then).
+================================================================================================
+
+enabled = true
+    (goes with the setting above)
+
+bow_leap_shot = true
+    Bow: X in the middle of a roll springs up and shoots from the top of the jump (the
+    game's unused animation bow_roll_light_atk). Same charge levels as every bow shot
+    (quick / medium / Focus / full charge, fires when you let go). Ground attacks pass
+    under you while you're in the air. X at the roll's landing stays the kneel shot; X
+    with the stick back stays the back-flip shot.
+
+hammer_spin_finale = true
+    Hammer: B during the spin (the Lariat: roll, X with the stick pulled back, then Y;
+    hold Y for more spins) plays the spin ending the game animated but never uses
+    (UNUSED_hammer_big_atk1_pst). B doesn't cut the spin you're in: the finale starts when
+    that spin comes round. One more spin, a big rising swing that knocks down (1.15x
+    damage; a Focus hit when the spin was at full length), the hammer carries you up into
+    the air (ground attacks pass under you), then you land with the hammer on your back.
+    Dodge right after landing. In the game B does nothing while the spin is going.
+
+hammer_finale_landing = "back"
+    Hammer: after the finale's landing (the hammer is on your back): "back" = it stays
+    there (the game's sheathed stance, as in camp; your next attack draws it, the way it
+    does in camp) "hand" = you draw it (the game's quick unsheathe; any input cuts it
+    short) "auto" = "back" in camp, "hand" on a run
+
+hammer_finale_knockback = 3.5
+    Hammer: the finale's rising swing knocks what it hits down and back. How far: the
+    game's knockdown distance for each enemy times this. 3.5 is the game's own knockback
+    number for the spin's last round (its knockdowns never used it, so they all go 1x). 1
+    = the game's distance, 0 = none. 0 to 10.
+
+hammer_focus_fx = true
+    Hammer: Focus spins throw the cyan Focus sparks of the game's charged swings. A Focus
+    spin (it hit more than one enemy, or it's at full length) gets the cyan spark glint
+    the game made for this spin but never plays (fx_hammer_big_atk1_loop_front): every
+    loop of it and the finale's extra spin; a Focus rising swing's trail gets the same
+    cyan sparks. false = off.
+
+hammer_air_spin_fx = true
+    Hammer: while the finale's hammer carries you up and you spin in the air, the
+    Windmon's wind spin whirls round you (the whirlwind of the Greatsword's flourish, and
+    of Owlitzer's perfect dodge in Boss Passives), riding on you as you go up and come
+    down; it ends as you land. false = off.
+
+hammer_input_log = false
+    Hammer: a short log of what the hammer does with your presses, to find out why a move
+    doesn't come out. With the hammer in hand, each X / Y / B / dodge press writes a line
+    to client_log.txt ("[Weapon Moves] hammer: Y in roll_pst frame 3, stick 168 deg from
+    where you face (back) -> reverse_heavy_attack_sliding"): the move you were in, where
+    the stick pointed (the golf swing and the fade-away swing that starts the spin need it
+    pointing back, more than 100 degrees away from where you face) and the move the game
+    went to. The first 150 presses of a session. false = off.
+
+guard = true
+    Bulletproofing: an error inside these moves is logged ("[Weapon Moves] error in ...")
+    and you go back to standing, instead of the game's error screen ending the run. false:
+    errors go to the game as before.

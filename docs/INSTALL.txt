@@ -1,0 +1,133 @@
+Rotwood Mega Mod Pack 0.1.0-draft6 - INSTALLATION, STEP BY STEP
+
+For: Windows, the Steam version of Rotwood. Made for game build 763742.
+Time: about two minutes. No admin rights, no internet.
+
+
+BEFORE YOU START
+
+- You need Rotwood installed through Steam, and you must have started it at least once
+  (that creates your save folder).
+- If you use another Rotwood mod loader, remove it first: in Steam, right-click Rotwood,
+  Properties, Installed Files, "Verify integrity of game files". The pack brings its own
+  loader and the two cannot be used together.
+
+
+STEP 1. UNPACK
+
+Right-click the downloaded zip, "Extract All...", and pick any folder (your Desktop is fine).
+Do not run the files from inside the zip: the installer needs the whole folder.
+
+You should now have a folder with Install.bat, Uninstall.bat, Check.bat, README.txt,
+INSTALL.txt, SETTINGS_GUIDE.txt and a "files" folder.
+
+
+STEP 2. CLOSE ROTWOOD
+
+The installer will not change anything while the game is running.
+
+
+STEP 3 (OPTIONAL). LOOK FIRST
+
+Double-click Check.bat. It changes nothing. It shows:
+
+    Game folder : where it found Rotwood
+    Game file   : data_scripts.zip - unmodified (no mod pack line)
+    Mods folder : your mods folder - pack not installed here
+    Rotwood is not running.
+    Check only: nothing was changed.
+
+If Windows shows a blue "Windows protected your PC" box: click "More info", then "Run anyway".
+(The files are plain text. Open files\modpack.ps1 in Notepad to read exactly what runs.)
+
+
+STEP 4. INSTALL
+
+Double-click Install.bat. It works through three steps and says what it is doing:
+
+    Step 1 of 3: preparing the game file (a copy; the real one is not touched yet)
+    Step 2 of 3: backing up your saves and copying the mods
+    Step 3 of 3: putting the game file in place
+    Installed. Start Rotwood.
+
+What it did:
+  - copied your save folder to
+    %APPDATA%\Klei\Rotwood\steam-<your id>\modpack_backup\saves_before_install_<date>\
+  - copied the 24 mods and the loader to
+    %APPDATA%\Klei\Rotwood\steam-<your id>\mods\
+  - added one line to scripts/main.lua inside data_scripts.zip in your Rotwood folder, and kept
+    the file as it was next to it as data_scripts.before_modpack_change.zip
+
+
+STEP 5. START ROTWOOD AND CHECK
+
+Start the game from Steam as usual. To confirm the mods loaded, open
+    %APPDATA%\Klei\Rotwood\steam-<your id>\client_log.txt
+in Notepad and search for  [Native Loader] . One line lists the mods that were loaded.
+
+In the game: at the mirror in town the character screen has new tabs (ARMOUR DYE, PLAYER COLOUR,
+BUILDS), and the map shows a Frenzy level under a hunt's name.
+
+
+STEP 6 (OPTIONAL). CHANGE SETTINGS
+
+Every mod has its own settings file. SETTINGS_GUIDE.txt lists every setting, what it does and
+which file it is in.
+
+
+AFTER A GAME UPDATE
+
+Steam replaces data_scripts.zip, so the game runs unmodified again. Close Rotwood and run
+Install.bat again: it puts the line back and leaves your mods and settings as they are.
+
+
+UNINSTALL
+
+Close Rotwood and double-click Uninstall.bat. It takes the line out of the game file and moves
+the pack's files to %APPDATA%\Klei\Rotwood\steam-<your id>\modpack_backup\ . Delete that folder
+when you no longer want them. Your saves stay where they are.
+
+
+IF THE INSTALLER STOPS
+
+It always says why, and it stops before changing anything unless it says otherwise.
+
+"Unpack the whole zip into a folder first"
+    You ran it from inside the zip. Do step 1.
+
+"Rotwood is running" / "data_scripts.zip cannot be written right now"
+    Close the game (and anything that has the Rotwood folder's files open) and run it again.
+
+"Rotwood was not found in your Steam libraries"
+    It asks for the folder. In Steam: right-click Rotwood, Manage, Browse local files. Copy the
+    address of the window that opens, paste it into the installer, press Enter.
+
+"no Rotwood save folder was found"
+    Start Rotwood once, close it, run Install.bat again.
+
+"another mod loader is patched into this game file"
+    Steam: right-click Rotwood, Properties, Installed Files, "Verify integrity of game files".
+    Then run Install.bat again.
+
+"this version of the game is laid out differently"
+    The game got an update this pack version does not know. Look for a newer version of the pack.
+
+"your saves could not be copied"
+    Something has a save file open, or the disk is full. Nothing else was changed.
+
+"This is an error in the installer itself"
+    Please report it with the text shown below that line.
+
+
+TO GO BACK TO YOUR SAVES FROM BEFORE THE INSTALL
+
+Close Rotwood. Copy what is in
+    %APPDATA%\Klei\Rotwood\steam-<your id>\modpack_backup\saves_before_install_<date>\
+back into
+    %APPDATA%\Klei\Rotwood\steam-<your id>\
+If Steam asks which save to keep, pick the local files.
+
+
+STEAM DECK / LINUX / BY HAND (not tested)
+
+See the last part of README.txt.
